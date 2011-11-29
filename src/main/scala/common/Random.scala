@@ -2,15 +2,17 @@ package edu.washington.cs.knowitall
 package common
 
 import scala.util
+import scala.collection.mutable.ArrayBuffer
 
 object Random {
-  def choose[A](iterable: Iterable[A], random: util.Random): A = {
+  /* choose a single element out of an interable of unknown size */
+  def choose[A](iterable: Iterable[A], rand: util.Random): A = {
     assert(!iterable.isEmpty, "iterable must not be empty")
     val iterator = iterable.iterator
     def rec(n: Int, choice: A): A = {
       if (iterator.hasNext) {
         val next = iterator.next
-        if (random.nextDouble() * n < 1) rec(n + 1, next)
+        if (rand.nextDouble() * n < 1) rec(n + 1, next)
         else rec(n + 1, choice)
       } else choice
     }
@@ -18,16 +20,38 @@ object Random {
     rec(2, iterator.next)
   }
 
-  def choose[A](set: Set[A], n: Int, random: util.Random): Set[A] = {
-    assert(set.size >= n, "set is smaller than n: " + set.size + " < " + n)
-    def rec(n: Int, set: Set[A], choices: Set[A]): Set[A] = {
-      if (n == 0) choices
-      else {
-        val choice = choose(set, random)
-        rec(n - 1, set - choice, choices + choice)
+  /* choose a single element out of an interable of known size */
+  def choose[A](iterable: Traversable[A], size: Int, rand: util.Random): A = {
+    assert(!iterable.isEmpty, "iterable must not be empty")
+    val index = rand.nextInt(size)
+    iterable.drop(index).head
+  }
+
+  /* choose n elements out of an iterable of known size */
+  def select[A](iterable: Iterable[A], size: Int, n: Int, rand: util.Random): Iterable[A] = {
+    assert(size >= n, "set is smaller than n: " + size + " < " + n)
+    var k = n
+    for {
+      (item, i) <- iterable.zipWithIndex
+      if (rand.nextDouble * (size - i) < k)
+    } yield {
+      k -= 1; item
+    }
+  }
+
+  /* choose n elements out of an iterable of unknown size */
+  def select[A: Manifest](iterable: Iterable[A], k: Int, rand: util.Random): Iterable[A] = {
+    assert(!iterable.isEmpty, "iterable must not be empty")
+    var result = new Array[A](k)
+    for ((item, i) <- iterable.zipWithIndex) {
+      if (i < k) {
+        result(i) = item
+      } else {
+        val s = rand.nextInt(i + 1)
+        if (s < k) result.update(s, item)
       }
     }
 
-    rec(n, set, Set())
+    result
   }
 }

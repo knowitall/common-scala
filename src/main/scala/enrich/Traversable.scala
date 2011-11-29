@@ -1,6 +1,6 @@
 package edu.washington.cs.knowitall
 package common
-package pimp
+package enrich
 
 sealed trait SuperTraversable[T] extends scalaz.PimpedType[Traversable[T]] {
   def histogram: Map[T, Int] = {

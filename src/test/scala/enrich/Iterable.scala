@@ -1,6 +1,6 @@
 package edu.washington.cs.knowitall
 package common
-package pimp
+package enrich
 
 import org.junit._
 import org.junit.Assert._
