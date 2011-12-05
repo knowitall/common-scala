@@ -1,21 +1,54 @@
 package edu.washington.cs.knowitall
 package collection.immutable
+import scala.collection.SeqLike
 
-class /*Open*/ Interval protected (val start: Int, val end: Int) {
+class /*Open*/ Interval protected (val start: Int, val end: Int) extends IndexedSeq[Int] with Ordered[Interval] {
   require(start <= end, "start must be <= end")
 
   override def toString = "[" + start + ", " + end + ")"
   override def equals(that: Any) = that match {
+    // fast comparison for Intervals
     case that: Interval => that.canEqual(this) && that.start == this.start && that.end == this.end
+    // slower comparison for Seqs
+    case that: IndexedSeq[_] => super.equals(that)
     case _ => false
   }
-  def canEqual(that: Any) = that.isInstanceOf[Interval]
+  override def canEqual(that: Any) = that.isInstanceOf[Interval]
+  override def compare(that: Interval) =
+    if (this.start > that.start) 1
+    else if (this.start < that.start) -1
+    else this.length - that.length
+
+  override def apply(index: Int): Int = {
+    require(index >= 0, "index < 0: " + index)
+    require(index < end, "index >= end: " + index + " >= " + end)
+
+    min + index
+  }
+  override def iterator: Iterator[Int] = {
+    new Iterator[Int] {
+      var index = start
+
+      def hasNext = index < end
+      def next() = {
+        val result = index
+        index += 1
+        result
+      }
+    }
+  }
+  override def seq = this
 
   private def max(x: Int, y: Int) = if (x > y) x else y
   private def min(x: Int, y: Int) = if (x < y) x else y
 
+  /* The length of the interval. */
+  override def length = end - start
+
+  /* Tests whether this list contains a given value as an element. */
   def contains(x: Int) = x <= start && x < end
-  def borders(int: Interval) = int.end == this.first - 1 || int.start == this.last + 1
+
+  def borders(int: Interval) = int.max == this.min-1 || int.min == this.max+1
   def intersects(that: Interval) = {
     if (this == that) true
     else {
@@ -37,11 +70,26 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) {
     else Interval.empty
   }
 
-  def left(that: Interval) = if (that.start < this.start) that else this
-  def right(that: Interval) = if (that.start > this.start) that else this
+  /* Determine whether this interval or the supplied interval is left.
+   * First compare based on the intervals' start, and secondly compare
+   * based on the intervals' length. */
+  def left(that: Interval) =
+    if (that.start < this.start) that
+    else if (that.start > this.start) this
+    else if (that.length < this.length) that
+    else this
 
-  def first = start
-  def last = end - 1
+  /* Determine whether this interval or the supplied interval is right.
+   * First compare based on the intervals' start, and secondly compare
+   * based on the intervals' length. */
+  def right(that: Interval) =
+    if (that.start > this.start) that
+    else if (that.start < this.start) this
+    else if (that.length > this.length) that
+    else this
+
+  def min = start
+  def max = end - 1
 }
 
 class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
@@ -52,9 +100,36 @@ class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
 
 object Interval {
   val empty = new Interval(0, 0)
+  def singleton(x: Int) = open(x, x + 1)
   def open(start: Int, end: Int) = {
     if (start == end) Interval.empty
     else new Interval(start, end)
   }
   def closed(start: Int, end: Int) = new ClosedInterval(start, end)
+
+  /* create an interval from a sequence of Ints. 
+   * @throws IllegalArgumentException  some x such tthat min < x < max is not in col */
+  def from(col: Seq[Int]) = {
+    if (col.isEmpty) Interval.empty
+    else {
+      val sorted = col.sorted
+      val min = sorted.head
+
+      require(sorted.zipWithIndex.forall { case (x, i) => x == min + i }, "missing elements in collection: " + col)
+
+      Interval.closed(min, sorted.last)
+    }
+  }
+
+  /* create an interval from a collection of intervals.  The intervals will be
+   * sorted and unioned. 
+   * @throws IllegalArgumentException  gap in intervals */
+  def union(col: Seq[Interval]) = {
+    val sorted = col.sorted
+    try {
+      sorted.reduceRight(_ union _)
+    } catch {
+      case _: IllegalArgumentException => throw new IllegalArgumentException("gap in intervals: " + sorted)
+    }
+  }
 }
