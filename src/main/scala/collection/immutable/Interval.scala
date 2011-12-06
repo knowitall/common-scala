@@ -48,7 +48,7 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
   /* Tests whether this list contains a given value as an element. */
   def contains(x: Int) = x <= start && x < end
 
-  def borders(int: Interval) = int.max == this.min-1 || int.min == this.max+1
+  def borders(int: Interval) = int.max == this.min - 1 || int.min == this.max + 1
   def intersects(that: Interval) = {
     if (this == that) true
     else {
