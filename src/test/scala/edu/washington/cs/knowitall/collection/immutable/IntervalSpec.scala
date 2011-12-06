@@ -44,4 +44,23 @@ object IntervalSpec extends Specification {
     (Interval.open(4, 8) right Interval.open(0, 4)) must_== (Interval.open(4, 8))
     (Interval.open(2, 6) right Interval.open(0, 4)) must_== (Interval.open(2, 6))
   }
+
+  "overlapping intervals have distance 0" in {
+    (Interval.open(0, 4) distance Interval.open(2, 6)) must_== (0)
+    (Interval.open(2, 6) distance Interval.open(0, 3)) must_== (0)
+  }
+
+  "intervals have the correct distance" in {
+    (Interval.open(0, 2) distance Interval.open(3, 5)) must_== (1)
+    (Interval.open(0, 2) distance Interval.open(4, 6)) must_== (2)
+  }
+
+  "adjacent intervals have the empty set between them" in {
+    Interval.between(Interval.open(0, 2), Interval.open(2, 3)) must_== (Interval.empty)
+  }
+
+  "between works properly" in {
+    Interval.between(Interval.open(0, 2), Interval.open(3, 10)) must_== (Interval.open(2, 3))
+    Interval.between(Interval.open(0, 2), Interval.open(6, 10)) must_== (Interval.open(2, 6))
+  }
 }

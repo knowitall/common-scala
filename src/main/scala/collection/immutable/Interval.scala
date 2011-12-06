@@ -3,6 +3,7 @@ package collection.immutable
 import scala.collection.SeqLike
 
 class /*Open*/ Interval protected (val start: Int, val end: Int) extends IndexedSeq[Int] with Ordered[Interval] {
+  import Interval._
   require(start <= end, "start must be <= end")
 
   override def toString = "[" + start + ", " + end + ")"
@@ -39,9 +40,6 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
   }
   override def seq = this
 
-  private def max(x: Int, y: Int) = if (x > y) x else y
-  private def min(x: Int, y: Int) = if (x < y) x else y
-
   /* The length of the interval. */
   override def length = end - start
 
@@ -61,13 +59,17 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
   }
   def disjoint(that: Interval) = !this.intersects(that)
 
+  def distance(that: Interval) =
+    if (this intersects that) 0
+    else (this.start max that.start) - (this.end min that.end)
+
   def union(int: Interval) = {
     require(this borders int)
-    new Interval(min(int.start, this.start), max(int.end, this.end))
+    new Interval(int.start min this.start, int.end max this.end)
   }
   def intersect(that: Interval) = {
-    val start = max(this.start, that.start)
-    val end = min(this.end, that.end)
+    val start = this.start max that.start
+    val end = this.end min that.end
     if (start < end) Interval.open(start, end)
     else Interval.empty
   }
@@ -108,6 +110,11 @@ object Interval {
     else new Interval(start, end)
   }
   def closed(start: Int, end: Int) = new ClosedInterval(start, end)
+
+  def between(x: Interval, y: Interval) = {
+    require(!(x intersects y), "intervals may not intersect")
+    Interval.open(x.end min y.end, x.start max y.start)
+  }
 
   /* create an interval from a sequence of Ints. 
    * @throws IllegalArgumentException  some x such tthat min < x < max is not in col */
