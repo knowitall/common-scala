@@ -51,8 +51,9 @@ object IntervalSpec extends Specification {
   }
 
   "intervals have the correct distance" in {
-    (Interval.open(0, 2) distance Interval.open(3, 5)) must_== (1)
-    (Interval.open(0, 2) distance Interval.open(4, 6)) must_== (2)
+    (Interval.open(0, 2) distance Interval.open(2, 5)) must_== (1)
+    (Interval.open(0, 2) distance Interval.open(3, 5)) must_== (2)
+    (Interval.open(0, 2) distance Interval.open(4, 6)) must_== (3)
   }
 
   "adjacent intervals have the empty set between them" in {

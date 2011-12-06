@@ -61,7 +61,7 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
 
   def distance(that: Interval) =
     if (this intersects that) 0
-    else (this.start max that.start) - (this.end min that.end)
+    else (this.min max that.min) - (this.max min that.max)
 
   def union(int: Interval) = {
     require(this borders int)
