@@ -16,6 +16,8 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) {
 
   def contains(x: Int) = x <= start && x < end
   def borders(int: Interval) = int.end == this.first - 1 || int.start == this.last + 1
+  def superset(that: Interval) = this.start <= that.start && this.end >= that.end
+  def subset(that: Interval) = this.start >= that.start && this.end <= that.end
   def intersects(that: Interval) = {
     if (this == that) true
     else {
