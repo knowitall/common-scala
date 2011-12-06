@@ -14,6 +14,9 @@ class IntervalSpecTest extends JUnit4(IntervalSpec)
 object IntervalSpec extends Specification {
   "intervals should border each other" in {
     (Interval.open(0, 4) borders Interval.open(4, 8)) must beTrue
+    (Interval.open(4, 8) borders Interval.open(0, 4)) must beTrue
+    (Interval.open(0, 3) borders Interval.open(4, 8)) must beFalse
+    (Interval.open(4, 8) borders Interval.open(0, 3)) must beFalse
     (Interval.empty borders Interval.open(4, 8)) must beFalse
   }
 
