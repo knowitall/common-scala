@@ -141,4 +141,11 @@ object Interval {
       case _: IllegalArgumentException => throw new IllegalArgumentException("gap in intervals: " + sorted)
     }
   }
+
+  /* create the smallest interval that spans a collection of intervals.
+   * The intervals will be sorted and unioned. 
+   * @throws IllegalArgumentException  gap in intervals */
+  def span(col: Seq[Interval]) = {
+    Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
+  }
 }
