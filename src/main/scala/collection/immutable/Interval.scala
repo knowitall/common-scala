@@ -2,7 +2,8 @@ package edu.washington.cs.knowitall
 package collection.immutable
 import scala.collection.SeqLike
 
-class /*Open*/ Interval protected (val start: Int, val end: Int) extends IndexedSeq[Int] with Ordered[Interval] {
+class /*Open*/ Interval protected (val start: Int, val end: Int)
+    extends IndexedSeq[Int] with Ordered[Interval] {
   import Interval._
   require(start <= end, "start must be <= end")
 
@@ -45,12 +46,27 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
 
   /* Tests whether this list contains a given value as an element. */
   def contains(x: Int) = x <= start && x < end
-  def borders(int: Interval) = int.max == this.min - 1 || int.min == this.max + 1
-  def superset(that: Interval) = this.start <= that.start && this.end >= that.end
-  def subset(that: Interval) = this.start >= that.start && this.end <= that.end
+
+  def borders(that: Interval) = {
+    if (this == empty || that == empty) false
+    else that.max == this.min - 1 || that.min == this.max + 1
+  }
+
+  def superset(that: Interval) = {
+    if (that == empty) true
+    else if (this == empty) false
+    else this.start <= that.start && this.end >= that.end
+  }
+
+  def subset(that: Interval) = {
+    if (that == empty) false
+    else if (this == empty) true
+    else this.start >= that.start && this.end <= that.end
+  }
 
   def intersects(that: Interval) = {
-    if (this == that) true
+    if (that == empty || this == empty) false
+    else if (this == that) true
     else {
       val left = this left that
       val right = this right that
@@ -59,26 +75,38 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
   }
   def disjoint(that: Interval) = !this.intersects(that)
 
-  def distance(that: Interval) =
+  def distance(that: Interval) = {
+    require(that != empty && this != empty)
     if (this intersects that) 0
     else (this.min max that.min) - (this.max min that.max)
-
-  def union(int: Interval) = {
-    require(this borders int)
-    new Interval(int.start min this.start, int.end max this.end)
   }
+
+  def union(that: Interval) = {
+    if (that == empty) this
+    else if (this == empty) that
+    else {
+      require(this borders that)
+      new Interval(that.start min this.start, that.end max this.end)
+    }
+  }
+
   def intersect(that: Interval) = {
-    val start = this.start max that.start
-    val end = this.end min that.end
-    if (start < end) Interval.open(start, end)
-    else Interval.empty
+    if (that == empty || this == empty) Interval.empty
+    else {
+      val start = this.start max that.start
+      val end = this.end min that.end
+      if (start < end) Interval.open(start, end)
+      else Interval.empty
+    }
   }
 
   /* Determine whether this interval or the supplied interval is left.
    * First compare based on the intervals' start, and secondly compare
    * based on the intervals' length. */
   def left(that: Interval) =
-    if (that.start < this.start) that
+    if (that == empty) this
+    else if (this == empty) that
+    else if (that.start < this.start) that
     else if (that.start > this.start) this
     else if (that.length < this.length) that
     else this
@@ -87,7 +115,9 @@ class /*Open*/ Interval protected (val start: Int, val end: Int) extends Indexed
    * First compare based on the intervals' start, and secondly compare
    * based on the intervals' length. */
   def right(that: Interval) =
-    if (that.start > this.start) that
+    if (that == empty) this
+    else if (this == empty) that
+    else if (that.start > this.start) that
     else if (that.start < this.start) this
     else if (that.length > this.length) that
     else this
