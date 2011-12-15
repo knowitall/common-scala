@@ -132,9 +132,13 @@ class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
   override def toString = "[" + start + ", " + end + "]"
 }
 
+class SingletonInterval(elem: Int) extends Interval(elem, elem + 1) {
+  override def toString = "{" + elem + "}"
+}
+
 object Interval {
   val empty = new Interval(0, 0)
-  def singleton(x: Int) = open(x, x + 1)
+  def singleton(x: Int) = new SingletonInterval(x)
   def open(start: Int, end: Int) = {
     if (start == end) Interval.empty
     else new Interval(start, end)
