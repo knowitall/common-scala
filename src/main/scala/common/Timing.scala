@@ -70,12 +70,14 @@ object Timing {
   /** A class to store timing statistics. */
   class Stats(val total: Long, val max: Long, val min: Long, val avg: Long) {
     override def toString =
-      "total: " + total + "ms,  min: " + min +
-        "ms,  max: " + max + "ms,  avg: " + avg + "ms"
+      "total: " + Milliseconds.format(total) + ",  " +
+      "min: " + Milliseconds.format(min) + ",  " +
+      "max: " + Milliseconds.format(max) + ",  " + 
+      "avg: " + Milliseconds.format(avg) 
   }
 
   /** Execute the blocks and report statistics about the time taken. */
-  def speedTest(executions: List[() => Any]) {
+  def speedTest(executions: List[() => Any]) = {
     val times = executions.map(e => time({ e() })._1)
 
     val total = times.reduce(_ + _)
