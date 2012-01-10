@@ -85,7 +85,4 @@ object Timing {
 
     new Stats(total, max, min, avg)
   }
-
-  def format(duration: Long) =
-    "%.2f".format(duration / 1000000.) + " ms"
 }
