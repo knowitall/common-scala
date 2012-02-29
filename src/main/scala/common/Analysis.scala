@@ -3,7 +3,7 @@ package common.stats
 object Analysis {
   /**
    * Compute precision yield points for each yield value.
-   * 
+   *
    * @return  a yield, precision point
    */
   def precisionYield(scores: Seq[Boolean]): Seq[(Int, Double)] = {
@@ -22,12 +22,12 @@ object Analysis {
 
     points.reverse
   }
-  
-   /**
+
+  /**
    * Compute precision yield points for each change in fst.
-   * 
+   *
    * Scored examples are presumed to be in sorted order.
-   * 
+   *
    * @return  a triple of T, the yield, and the precision
    */
   def precisionYieldMeta[T](scores: Seq[(T, Boolean)]): Seq[(T, Int, Double)] = {
@@ -38,20 +38,22 @@ object Analysis {
       var points = List[(T, Int, Double)]()
       var last = scores.head._1
 
+      var i = 0
       for ((meta, score) <- scores) {
         if (score) correct = correct + 1
         else incorrect = incorrect + 1
 
-        if (meta != last) {
+        if (meta != last || i == scores.length - 1) {
           last = meta
           points ::= (meta, correct, precision(correct, incorrect))
         }
+        
+        i = i + 1
       }
 
       points.reverse
     }
   }
-
 
   /**
    * Compute precision from counts of correct and incorrect examples.
