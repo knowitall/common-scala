@@ -2,7 +2,7 @@ package edu.washington.cs.knowitall
 package common
 package enrich
 
-sealed trait SuperTraversable[T] extends scalaz.PimpedType[Traversable[T]] {
+sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T]] {
   def histogram: Map[T, Int] = {
     value.foldLeft(Map[T, Int]()) { (m, c) ⇒
       m.updated(c, m.getOrElse(c, 0) + 1)
@@ -11,7 +11,7 @@ sealed trait SuperTraversable[T] extends scalaz.PimpedType[Traversable[T]] {
 }
 
 object Traversables {
-  implicit def TraversableTo[A](as: Traversable[A]): SuperTraversable[A] = new SuperTraversable[A] {
+  implicit def traversableTo[A](as: TraversableOnce[A]): SuperTraversableOnce[A] = new SuperTraversableOnce[A] {
     val value = as
   }
 }
