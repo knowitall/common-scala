@@ -64,4 +64,20 @@ object IntervalSpec extends Specification {
     Interval.between(Interval.open(0, 2), Interval.open(3, 10)) must_== (Interval.open(2, 3))
     Interval.between(Interval.open(0, 2), Interval.open(6, 10)) must_== (Interval.open(2, 6))
   }
+
+  "empty works properly" in {
+    (Interval.empty union Interval.open(2, 4)) must_== (Interval.open(2, 4))
+    (Interval.empty intersect Interval.open(2, 4)) must_== (Interval.empty)
+
+    (Interval.empty left Interval.open(2, 4)) must_== (Interval.open(2, 4))
+    (Interval.open(2, 4) left Interval.empty) must_== (Interval.open(2, 4))
+    (Interval.empty right Interval.open(2, 4)) must_== (Interval.open(2, 4))
+    (Interval.open(2, 4) right Interval.empty) must_== (Interval.open(2, 4))
+
+    (Interval.open(2, 4) subset Interval.empty) must beFalse
+    (Interval.empty subset Interval.open(2, 4)) must beTrue
+
+    (Interval.open(2, 4) superset Interval.empty) must beTrue
+    (Interval.empty superset Interval.open(2, 4)) must beFalse
+  }
 }
