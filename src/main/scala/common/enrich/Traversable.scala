@@ -20,12 +20,24 @@ sealed trait SuperTraversableOncePairInt[T] extends scalaz.PimpedType[Traversabl
   }
 }
 
+sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[TraversableOnce[(T, U)]] {
+  def toMultiMap: Map[T, List[U]] = {
+    value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) { case (map, (k, v)) =>
+      map + (k -> (v :: map(k)))
+    }
+  }
+}
+
 object Traversables {
   implicit def traversableOnceTo[T](as: TraversableOnce[T]): SuperTraversableOnce[T] = new SuperTraversableOnce[T] {
     val value = as
   }
 
   implicit def traversableOncePairIntTo[T](as: TraversableOnce[(T, Int)]): SuperTraversableOncePairInt[T] = new SuperTraversableOncePairInt[T] {
+    val value = as
+  }
+
+  implicit def traversableOncePairTo[T, U](as: TraversableOnce[(T, U)]): SuperTraversableOncePair[T, U] = new SuperTraversableOncePair[T, U] {
     val value = as
   }
 }
