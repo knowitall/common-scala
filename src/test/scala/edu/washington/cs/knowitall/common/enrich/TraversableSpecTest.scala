@@ -11,7 +11,7 @@ import org.specs.runner.JUnitSuiteRunner
 class TraversableSpecTest extends JUnit4(TraversableSpec)
 object TraversableSpec extends Specification {
   import Traversables._
-  
+
   "simple histogram works fine" in {
     val h1 = List(1, 2, 2, 3, 3, 3).histogram
     val h2 = List(3, 2, 1, 3, 2, 3).histogram
@@ -20,8 +20,8 @@ object TraversableSpec extends Specification {
   }
 
   "histogram from partials works fine" in {
-    val h1 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).histogramFromPartials
-    val h2 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).reverse.histogramFromPartials
+    val h1 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).mergeHistograms
+    val h2 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).reverse.mergeHistograms
     h1 must_== h2
     h1 must haveTheSameElementsAs(List((1, 1), (2, 4), (3, 9)))
   }

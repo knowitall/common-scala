@@ -11,7 +11,7 @@ sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T
 }
 
 sealed trait SuperTraversableOncePairInt[T] extends scalaz.PimpedType[TraversableOnce[(T, Int)]] {
-  def histogramFromPartials: Map[T, Int] = {
+  def mergeHistograms: Map[T, Int] = {
     value.foldLeft(Map[T, Int]()) { (m, item) =>
       item match {
         case (x, c) => m.updated(x, m.getOrElse(x, 0) + c)
@@ -22,8 +22,32 @@ sealed trait SuperTraversableOncePairInt[T] extends scalaz.PimpedType[Traversabl
 
 sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[TraversableOnce[(T, U)]] {
   def toMultiMap: Map[T, List[U]] = {
-    value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) { case (map, (k, v)) =>
-      map + (k -> (v :: map(k)))
+    value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
+      case (map, (k, v)) =>
+        map + (k -> (v :: map(k)))
+    }
+  }
+
+  def toSetMultiMap: Map[T, Set[U]] = {
+    value.foldLeft(Map[T, Set[U]]().withDefaultValue(Set.empty[U])) {
+      case (map, (k, v)) =>
+        map + (k -> (map(k) + v))
+    }
+  }
+}
+
+sealed trait SuperTraversableOncePairIterable[T, U] extends scalaz.PimpedType[TraversableOnce[(T, Iterable[U])]] {
+  def mergeMultiMaps: Map[T, List[U]] = {
+    value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
+      case (map, (k, v)) =>
+        map + (k -> (map(k) ++ v))
+    }
+  }
+
+  def mergeSetMultiMaps: Map[T, Set[U]] = {
+    value.foldLeft(Map[T, Set[U]]().withDefaultValue(Set.empty[U])) {
+      case (map, (k, v)) =>
+        map + (k -> (map(k) ++ v))
     }
   }
 }
@@ -34,6 +58,10 @@ object Traversables {
   }
 
   implicit def traversableOncePairIntTo[T](as: TraversableOnce[(T, Int)]): SuperTraversableOncePairInt[T] = new SuperTraversableOncePairInt[T] {
+    val value = as
+  }
+
+  implicit def traversableOncePairIterable[T, U](as: TraversableOnce[(T, Iterable[U])]): SuperTraversableOncePairIterable[T, U] = new SuperTraversableOncePairIterable[T, U] {
     val value = as
   }
 
