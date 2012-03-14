@@ -2,6 +2,8 @@ package edu.washington.cs.knowitall
 package common
 package enrich
 
+import edu.washington.cs.knowitall.collection.immutable.Bag
+
 sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T]] {
   def histogram: Map[T, Int] = {
     value.foldLeft(Map[T, Int]()) { (m, c) =>
@@ -21,33 +23,49 @@ sealed trait SuperTraversableOncePairInt[T] extends scalaz.PimpedType[Traversabl
 }
 
 sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[TraversableOnce[(T, U)]] {
-  def toMultiMap: Map[T, List[U]] = {
+  def toListMultimap: Map[T, List[U]] = {
     value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
       case (map, (k, v)) =>
         map + (k -> (v :: map(k)))
     }
   }
 
-  def toSetMultiMap: Map[T, Set[U]] = {
+  def toSetMultimap: Map[T, Set[U]] = {
     value.foldLeft(Map[T, Set[U]]().withDefaultValue(Set.empty[U])) {
       case (map, (k, v)) =>
         map + (k -> (map(k) + v))
     }
   }
+
+  def toBagMultimap: Map[T, Bag[U]] = {
+    value.foldLeft(Map[T, Bag[U]]().withDefaultValue(Bag.empty[U])) {
+      case (map, (k, v)) =>
+        val bag = map(k)
+        map + (k -> (bag + v))
+    }
+  }
 }
 
 sealed trait SuperTraversableOncePairIterable[T, U] extends scalaz.PimpedType[TraversableOnce[(T, Iterable[U])]] {
-  def mergeMultiMaps: Map[T, List[U]] = {
+  def mergeListMultimaps: Map[T, List[U]] = {
     value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
-      case (map, (k, v)) =>
-        map + (k -> (map(k) ++ v))
+      case (map, (k, vs)) =>
+        map + (k -> (map(k) ++ vs))
     }
   }
 
-  def mergeSetMultiMaps: Map[T, Set[U]] = {
+  def mergeSetMultimaps: Map[T, Set[U]] = {
     value.foldLeft(Map[T, Set[U]]().withDefaultValue(Set.empty[U])) {
-      case (map, (k, v)) =>
-        map + (k -> (map(k) ++ v))
+      case (map, (k, vs)) =>
+        map + (k -> (map(k) ++ vs))
+    }
+  }
+
+  def mergeBagMultimaps: Map[T, Bag[U]] = {
+    value.foldLeft(Map[T, Bag[U]]().withDefaultValue(Bag.empty[U])) {
+      case (map, (k, vs)) =>
+        val bag = map(k)
+        map + (k -> (bag ++ vs))
     }
   }
 }
