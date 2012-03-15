@@ -4,6 +4,9 @@ package enrich
 
 import edu.washington.cs.knowitall.collection.immutable.Bag
 
+import scalaz._
+import Scalaz._
+
 sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T]] {
   def histogram: Map[T, Int] = {
     value.foldLeft(Map[T, Int]()) { (m, c) =>
@@ -13,16 +16,33 @@ sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T
 }
 
 sealed trait SuperTraversableOncePairInt[T] extends scalaz.PimpedType[TraversableOnce[(T, Int)]] {
-  def mergeHistograms: Map[T, Int] = {
-    value.foldLeft(Map[T, Int]()) { (m, item) =>
-      item match {
-        case (x, c) => m.updated(x, m.getOrElse(x, 0) + c)
-      }
-    }
-  }
+  import Traversables._
+  def mergeHistograms: Map[T, Int] = value.mergeKeys(_ + _)
 }
 
 sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[TraversableOnce[(T, U)]] {
+  def mergeKeys(implicit mon: Semigroup[U]): Map[T, U] = {
+    value.foldLeft(Map[T, U]()) {
+      case (map, (k, v)) =>
+        map + (k -> (map.get(k).map(_ |+| v).getOrElse(v)))
+    }
+  }
+
+  def mergeKeys[F[_]](implicit point: Pointed[F], sem: Semigroup[F[U]]): Map[T, F[U]] = {
+    value.foldLeft(Map[T, F[U]]()) {
+      case (map, (k, v)) =>
+        val pure = v.pure[F]
+        map + (k -> (map.get(k).map(_ |+| pure).getOrElse(pure)))
+    }
+  }
+
+  def mergeKeys(merge: (U, U) => U): Map[T, U] = {
+    value.foldLeft(Map[T, U]()) {
+      case (map, (k, v)) =>
+        map + (k -> map.get(k).map(merge(_, v)).getOrElse(v))
+    }
+  }
+
   def toListMultimap: Map[T, List[U]] = {
     value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
       case (map, (k, v)) =>
@@ -46,40 +66,12 @@ sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[Traversabl
   }
 }
 
-sealed trait SuperTraversableOncePairIterable[T, U] extends scalaz.PimpedType[TraversableOnce[(T, Iterable[U])]] {
-  def mergeListMultimaps: Map[T, List[U]] = {
-    value.foldLeft(Map[T, List[U]]().withDefaultValue(List.empty[U])) {
-      case (map, (k, vs)) =>
-        map + (k -> (map(k) ++ vs))
-    }
-  }
-
-  def mergeSetMultimaps: Map[T, Set[U]] = {
-    value.foldLeft(Map[T, Set[U]]().withDefaultValue(Set.empty[U])) {
-      case (map, (k, vs)) =>
-        map + (k -> (map(k) ++ vs))
-    }
-  }
-
-  def mergeBagMultimaps: Map[T, Bag[U]] = {
-    value.foldLeft(Map[T, Bag[U]]().withDefaultValue(Bag.empty[U])) {
-      case (map, (k, vs)) =>
-        val bag = map(k)
-        map + (k -> (bag ++ vs))
-    }
-  }
-}
-
 object Traversables {
   implicit def traversableOnceTo[T](as: TraversableOnce[T]): SuperTraversableOnce[T] = new SuperTraversableOnce[T] {
     val value = as
   }
 
   implicit def traversableOncePairIntTo[T](as: TraversableOnce[(T, Int)]): SuperTraversableOncePairInt[T] = new SuperTraversableOncePairInt[T] {
-    val value = as
-  }
-
-  implicit def traversableOncePairIterable[T, U](as: TraversableOnce[(T, Iterable[U])]): SuperTraversableOncePairIterable[T, U] = new SuperTraversableOncePairIterable[T, U] {
     val value = as
   }
 

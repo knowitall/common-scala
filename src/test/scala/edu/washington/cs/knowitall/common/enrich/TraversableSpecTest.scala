@@ -22,9 +22,12 @@ object TraversableSpec extends Specification {
   }
 
   "histogram from partials works fine" in {
-    val h1 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).mergeHistograms
-    val h2 = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3)).reverse.mergeHistograms
+    val list = List((1, 1), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3))
+    val h1 = list.mergeHistograms
+    val h2 = list.reverse.mergeHistograms
+    val h3 = list.mergeKeys(_ + _)
     h1 must_== h2
+    h1 must_== h3
     h1 must haveTheSameElementsAs(List((1, 1), (2, 4), (3, 9)))
   }
 
@@ -35,7 +38,7 @@ object TraversableSpec extends Specification {
     multimap must haveTheSameElementsAs(Map(1 -> List(1, 2, 1), 2 -> List(2)))
 
     val extended = (multimap.toSeq :+ (1 -> List(2, 3, 4, 5)))
-    val merged = extended.mergeListMultimaps
+    val merged = extended.mergeKeys(_ ++ _)
 
     merged must haveTheSameElementsAs(Map(1 -> List(1, 2, 1, 2, 3, 4, 5), 2 -> List(2)))
   }
@@ -47,7 +50,7 @@ object TraversableSpec extends Specification {
     multimap must haveTheSameElementsAs(Map(1 -> Set(1, 2), 2 -> Set(2)))
 
     val extended = (multimap.toSeq :+ (1 -> Set(2, 3, 4, 5)))
-    val merged = extended.mergeSetMultimaps
+    val merged = extended.mergeKeys(_ ++ _)
 
     merged must haveTheSameElementsAs(Map(1 -> Set(1, 2, 3, 4, 5), 2 -> Set(2)))
   }
@@ -59,7 +62,7 @@ object TraversableSpec extends Specification {
     multimap must haveTheSameElementsAs(Map(1 -> Bag(1, 1, 2), 2 -> Bag(2)))
 
     val extended = (multimap.toSeq :+ (1 -> Bag(2, 3, 4, 5)))
-    val merged = extended.mergeBagMultimaps
+    val merged = extended.mergeKeys(_ ++ _)
 
     merged must haveTheSameElementsAs(Map(1 -> Bag(1, 1, 2, 2, 3, 4, 5), 2 -> Bag(2)))
   }
