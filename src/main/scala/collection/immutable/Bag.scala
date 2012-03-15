@@ -2,6 +2,7 @@ package edu.washington.cs.knowitall
 package collection.immutable
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
 import scala.collection.IterableLike
 
@@ -34,7 +35,11 @@ class Bag[T] private (private val bagmap: Map[T, Int], override val size: Int)
     new Bag[T](bagmap + (k -> v), size + sumand)
   }
 
-  def ++(kvs: Traversable[(T, Int)]) = kvs.foldLeft(this)((bag, kv) => bag + kv)
+  def merge(that: Bag[T]) = {
+    that.bagmap.foldLeft(this) { case (bag, (v, c)) => bag add (v, c) }
+  }
+
+  def ++(vs: Traversable[T]) = vs.foldLeft(this)((bag, v) => bag + v)
 
   def +(kv: (T, Int)): Bag[T] = kv match {
     case (k, v) =>
@@ -64,9 +69,20 @@ class Bag[T] private (private val bagmap: Map[T, Int], override val size: Int)
   def get(k: T): Option[Int] = {
     bagmap.get(k)
   }
+
+  def uniques: Iterable[T] = this.bagmap.keys
 }
 
 object Bag {
+  import scalaz._
+  import Scalaz._
+
+  implicit def BagSemigroup[T]: Semigroup[Bag[T]] = semigroup(_ ++ _)
+  implicit def BagZero[T]: Zero[Bag[T]] = zero(Bag.empty[T])
+  implicit def BagPure: Pure[Bag] = new Pure[Bag] {
+    def pure[T](x: => T) = Bag[T](x)
+  }
+
   def fromCounts[T](ts: TraversableOnce[(T, Int)]): Bag[T] = {
     ts.foldLeft(Bag.empty[T]) {
       case (bag, (k, v)) =>
@@ -84,8 +100,22 @@ object Bag {
   def apply[T](varargs: T*) = from(varargs)
   def empty[T] = Bag[T]()
 
-  def newCountsBuilder[T] = ListBuffer[(T, Int)]() mapResult fromCounts
-  def newBuilder[T] = ListBuffer[T]() mapResult from
+  class BagBuilder[T](empty: Bag[T]) extends Builder[T, Bag[T]] {
+    var bag: Bag[T] = empty
+
+    def clear {
+      bag = Bag.empty[T]
+    }
+
+    def +=(elem: T): this.type = {
+      bag += elem
+      this
+    }
+
+    def result = { bag }
+  }
+
+  def newBuilder[T]: Builder[T, Bag[T]] = new BagBuilder[T](Bag.empty[T])
 
   implicit def canBuildFrom[T] =
     new CanBuildFrom[Bag[T], T, Bag[T]] {
