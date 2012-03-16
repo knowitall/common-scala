@@ -27,7 +27,7 @@ class Bag[T] private (private val bagmap: Map[T, Int], override val size: Int)
   override def newBuilder = Bag.newBuilder[T]
 
   // conversions
-  def toMap = this.bagmap
+  def asMap = this.bagmap
 
   def add(k: T, sumand: Int): Bag[T] = {
     val v = bagmap(k) + sumand
