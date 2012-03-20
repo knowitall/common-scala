@@ -7,7 +7,7 @@
   <parent>
     <groupId>edu.washington.cs.knowitall</groupId>
     <artifactId>knowitall</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.0</version>
   </parent>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,10 +38,11 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
+      <version>2.9.1-1</version>
     </dependency>
     <dependency>
       <groupId>org.scalaz</groupId>
-      <artifactId>scalaz-core_${scala.version}</artifactId>
+      <artifactId>scalaz-core_2.9.1</artifactId>
       <version>6.0.4</version>
     </dependency>
     <dependency>
