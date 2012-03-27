@@ -62,6 +62,9 @@ object Timing {
     result
   }
 
+  /** Compute the time since ns. */
+  def since(ns: Long): Long = System.nanoTime - ns
+
   /** Execute the command and print the time taken. */
   def printTime[R](block: => R) {
     time(block, println)
