@@ -1,6 +1,34 @@
 package common.stats
 
 object Analysis {
+  
+  /**
+   * Compute the area under curve from yield-precision points.
+   * 
+   * Approximate area with Riemann sums with delta 1.
+   *
+   * @return  a yield, precision point
+   */
+  def areaUnderCurve(points: Seq[(Int, Double)]) = {
+    val max = points.iterator.map(_._1).max
+    
+    val it = points.iterator.buffered
+    var cur = (0, 1.0)
+    var area = 0.0
+    while (it.hasNext) {
+      // save last point
+      val (lastYld, lastPrc) = cur
+
+      // increment iterator
+      cur = it.next
+      val (yld, prc) = cur
+      
+      area += 0.5 * (yld - lastYld) * (prc + lastPrc)
+    }
+    
+    area
+  }
+  
   /**
    * Compute precision yield points for each yield value.
    *
@@ -47,7 +75,7 @@ object Analysis {
           last = meta
           points ::= (meta, correct, precision(correct, incorrect))
         }
-        
+
         i = i + 1
       }
 
