@@ -68,6 +68,8 @@
     </dependencies>
   </dependencyManagement>
   <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
     <!-- build scala code -->
     <plugins>
       <plugin>
