@@ -2,7 +2,7 @@ package edu.washington.cs.knowitall.collection.immutable.graph
 
 import scala.Option.option2Iterable
 import scala.collection.mutable
-import scala.collection.{Traversable, Set, Map, Iterable}
+import scala.collection.{ Traversable, Set, Map, Iterable }
 
 import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
 

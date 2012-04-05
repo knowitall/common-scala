@@ -2,8 +2,8 @@ package edu.washington.cs.knowitall.collection.immutable.graph.pattern
 
 import scala.Option.option2Iterable
 
-import edu.washington.cs.knowitall.collection.immutable.graph.{Graph, DirectedEdge}
-import edu.washington.cs.knowitall.collection.immutable.graph.{UpEdge, DownEdge, Direction}
+import edu.washington.cs.knowitall.collection.immutable.graph.{ Graph, DirectedEdge }
+import edu.washington.cs.knowitall.collection.immutable.graph.{ UpEdge, DownEdge, Direction }
 
 /**
  * Abstract superclass for all matchers.
