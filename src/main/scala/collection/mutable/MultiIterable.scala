@@ -1,6 +1,4 @@
-package edu.washington.cs.knowitall
-package tool
-package parse
+package edu.washington.cs.knowitall.collection.mutable
 
 import scala.collection.Iterable
 

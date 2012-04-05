@@ -1,8 +1,8 @@
-package edu.washington.cs.knowitall.common
-package main
+package edu.washington.cs.knowitall.common.main
 
-import Timing._
 import java.util.Scanner
+
+import edu.washington.cs.knowitall.common.Timing.time
 
 /**
  * This class is to be extended by an object to provide a simple main class

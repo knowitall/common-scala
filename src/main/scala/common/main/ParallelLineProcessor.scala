@@ -1,8 +1,6 @@
-package edu.washington.cs.knowitall.common
-package main
+package edu.washington.cs.knowitall.common.main
 
-import Timing._
-import java.util.Scanner
+import edu.washington.cs.knowitall.common.Timing
 
 /**
  * This class is to be extended by an object to provide a simple main class
@@ -20,7 +18,7 @@ abstract class ParallelLineProcessor {
 
     val lock = new Object()
 
-    val ns = time {
+    val ns = Timing.time {
       for (group <- lines.grouped(groupSize)) {
         for (line <- group.par) {
           lock.synchronized {

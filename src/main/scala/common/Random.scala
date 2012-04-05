@@ -1,5 +1,4 @@
-package edu.washington.cs.knowitall
-package common
+package edu.washington.cs.knowitall.common
 
 import scala.util
 import scala.collection.mutable.ArrayBuffer

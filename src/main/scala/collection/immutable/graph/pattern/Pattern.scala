@@ -1,14 +1,8 @@
-package edu.washington.cs.knowitall
-package collection
-package immutable
-package graph
+package edu.washington.cs.knowitall.collection.immutable.graph.pattern
 
-import common._
+import edu.washington.cs.knowitall.common.enrich.Iterables
+import edu.washington.cs.knowitall.collection.immutable.graph.{Graph, DirectedEdge, Bipath}
 
-import graph._
-import collection._
-
-import scala.util.matching.Regex
 
 /**
  * Represents a pattern with which graphs can be searched.
@@ -33,7 +27,7 @@ class Pattern[T](
   }
 
   def this(edgeMatchers: List[EdgeMatcher[T]], nodeMatchers: List[NodeMatcher[T]]) = {
-    this(enrich.Iterables.interleave(nodeMatchers, edgeMatchers).toList)
+    this(Iterables.interleave(nodeMatchers, edgeMatchers).toList)
   }
 
   // extend Object

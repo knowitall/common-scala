@@ -1,8 +1,7 @@
-package edu.washington.cs.knowitall
-package collection
-package mutable
+package edu.washington.cs.knowitall.collection.mutable
 
-import scala.collection._
+import scala.collection.mutable
+import scala.collection.immutable
 import scala.collection.mutable.Builder
 import scala.collection.mutable.MapBuilder
 import scala.collection.generic.CanBuildFrom

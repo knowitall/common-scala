@@ -1,5 +1,4 @@
-package edu.washington.cs.knowitall
-package collection.immutable
+package edu.washington.cs.knowitall.collection.immutable
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Builder

@@ -1,9 +1,8 @@
-package edu.washington.cs.knowitall
-package collection
-package immutable
-package graph
+package edu.washington.cs.knowitall.collection.immutable.graph
 
-import Graph._
+import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
+
+import Graph.Edge
 
 /* represents a direction in a graph */
 sealed trait Direction {

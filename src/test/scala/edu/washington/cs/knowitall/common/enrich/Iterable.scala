@@ -1,6 +1,4 @@
-package edu.washington.cs.knowitall
-package common
-package enrich
+package edu.washington.cs.knowitall.common.enrich
 
 import org.junit._
 import org.junit.Assert._

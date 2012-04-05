@@ -1,8 +1,6 @@
-package edu.washington.cs.knowitall
-package common
-package enrich
+package edu.washington.cs.knowitall.common.enrich
 
-import collection.immutable.Bag
+import edu.washington.cs.knowitall.collection.immutable.Bag
 
 import org.junit.runner.RunWith
 import org.specs.runner.JUnit4

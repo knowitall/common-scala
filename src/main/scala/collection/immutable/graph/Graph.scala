@@ -1,10 +1,12 @@
-package edu.washington.cs.knowitall
-package collection
-package immutable
-package graph
+package edu.washington.cs.knowitall.collection.immutable.graph
 
-import scala.collection._
-import Graph._
+import scala.Option.option2Iterable
+import scala.collection.mutable
+import scala.collection.{Traversable, Set, Map, Iterable}
+
+import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
+
+import Graph.Edge
 
 /* A graph representation where data is stored in vertices and edges are
  * represented with adjacency lists. */

@@ -1,12 +1,8 @@
-package edu.washington.cs.knowitall
-package collection
-package immutable
+package edu.washington.cs.knowitall.collection.immutable
 
-import org.junit._
-import org.junit.Assert._
-import org.specs.Specification
-import org.specs.runner.JUnit4
 import org.junit.runner.RunWith
+import org.specs.runner.JUnit4
+import org.specs.Specification
 import org.specs.runner.JUnitSuiteRunner
 
 @RunWith(classOf[JUnitSuiteRunner])

@@ -1,6 +1,6 @@
-package edu.washington.cs.knowitall
-package collection.immutable
-import scala.collection.SeqLike
+package edu.washington.cs.knowitall.collection.immutable
+
+import Interval.empty
 
 class /*Open*/ Interval protected (val start: Int, val end: Int)
     extends IndexedSeq[Int] with Ordered[Interval] {

@@ -1,6 +1,4 @@
-package edu.washington.cs.knowitall
-package collection
-package mutable
+package edu.washington.cs.knowitall.collection.mutable
 
 import org.junit._
 import org.junit.Assert._

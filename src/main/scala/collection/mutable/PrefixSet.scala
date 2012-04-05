@@ -1,8 +1,6 @@
-package edu.washington.cs.knowitall
-package collection
-package mutable
+package edu.washington.cs.knowitall.collection.mutable
 
-import scala.collection._
+import scala.collection.mutable
 
 /**
  * Patricia Stringrie implementation taken from "Programming in Scala" by Martin Odersky.

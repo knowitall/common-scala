@@ -1,16 +1,13 @@
-package edu.washington.cs.knowitall
-package collection
-package immutable
-package graph
+package edu.washington.cs.knowitall.collection.immutable.graph
 
-import org.junit._
-import org.junit.Assert._
-import org.specs.Specification
-import org.specs.runner.JUnit4
-import org.junit.runner.RunWith
-import org.specs.runner.JUnitSuiteRunner
-import Graph._
 import scala.collection.SortedSet
+
+import org.junit.runner.RunWith
+import org.specs.runner.JUnit4
+import org.specs.runner.JUnitSuiteRunner
+import org.specs.Specification
+
+import Graph.Edge
 
 @RunWith(classOf[JUnitSuiteRunner])
 class GraphSpecTest extends JUnit4(GraphSpec)
