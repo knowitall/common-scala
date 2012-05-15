@@ -2,8 +2,9 @@ package edu.washington.cs.knowitall.collection.immutable
 
 import Interval.empty
 
+@SerialVersionUID(1234L)
 class /*Open*/ Interval protected (val start: Int, val end: Int)
-    extends IndexedSeq[Int] with Ordered[Interval] {
+    extends IndexedSeq[Int] with Ordered[Interval] with scala.Serializable {
   import Interval._
   require(start <= end, "start must be <= end")
 

@@ -5,6 +5,11 @@ import org.specs.runner.JUnit4
 import org.specs.Specification
 import org.specs.runner.JUnitSuiteRunner
 
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+
 @RunWith(classOf[JUnitSuiteRunner])
 class IntervalSpecTest extends JUnit4(IntervalSpec)
 object IntervalSpec extends Specification {
@@ -75,5 +80,31 @@ object IntervalSpec extends Specification {
 
     (Interval.open(2, 4) superset Interval.empty) must beTrue
     (Interval.empty superset Interval.open(2, 4)) must beFalse
+  }
+
+  "serialization works properly" in {
+
+    def testSerDeser(interval: Interval): Unit = {
+
+      val bytesOutStream = new ByteArrayOutputStream()
+      val objOutStream = new ObjectOutputStream(bytesOutStream)
+      objOutStream.writeObject(interval)
+      val outputBytes = bytesOutStream.toByteArray
+      objOutStream.close()
+      bytesOutStream.close()
+
+      val bytesInStream = new ByteArrayInputStream(outputBytes)
+      val objInStream = new ObjectInputStream(bytesInStream)
+      val deserializedInterval = objInStream.readObject.asInstanceOf[Interval]
+      objInStream.close()
+      bytesInStream.close()
+
+      deserializedInterval must_== interval
+    }
+
+    testSerDeser(Interval.empty)
+    testSerDeser(Interval.closed(5, 10))
+    testSerDeser(Interval.open(100, 200))
+    testSerDeser(Interval.singleton(1234))
   }
 }
