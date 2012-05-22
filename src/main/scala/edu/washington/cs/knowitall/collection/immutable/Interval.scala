@@ -138,7 +138,7 @@ sealed class Interval protected (val start: Int, val end: Int)
    * @return  the distance between two intervals.
    */
   def distance(that: Interval) = {
-    require(that != empty && this != empty)
+    require(that != empty && this != empty, "empty interval")
     if (this intersects that) 0
     else (this.min max that.min) - (this.max min that.max)
   }
@@ -151,7 +151,7 @@ sealed class Interval protected (val start: Int, val end: Int)
     if (that == empty) this
     else if (this == empty) that
     else {
-      require((this borders that) || (this intersects that))
+      require((this borders that) || (this intersects that), "intervals must border or intersect")
       Interval.open(that.start min this.start, that.end max this.end)
     }
   }
@@ -207,6 +207,7 @@ object Interval {
 
   /** Create a new open interval. */
   def open(start: Int, end: Int): Interval = {
+    require(end >= start, "end < start: " + end + " < " + start)
     if (start == end) Interval.empty
     else if (end - start == 1) Interval.singleton(start)
     else new Interval(start, end)
@@ -214,7 +215,7 @@ object Interval {
 
   /** Create a new closed interval. */
   def closed(start: Int, end: Int): Interval = {
-    require(end >= start)
+    require(end >= start, "end < start: " + end + " < " + start)
     if (end == start) Interval.singleton(start)
     else new Closed(start, end)
   }
