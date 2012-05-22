@@ -10,7 +10,7 @@ import Interval.empty
  * @author  Michael Schmitz
  */
 @SerialVersionUID(1234L)
-sealed class /*Open*/ Interval protected (val start: Int, val end: Int)
+sealed class Interval protected (val start: Int, val end: Int)
     extends IndexedSeq[Int] with Ordered[Interval] with scala.Serializable {
   import Interval._
   require(start <= end, "start must be <= end")
@@ -199,26 +199,11 @@ sealed class /*Open*/ Interval protected (val start: Int, val end: Int)
   def max = end - 1
 }
 
-/**
- * An interval that includes only a single index.
- * All intervals with a single element will always extend SingletonInterval.
- */
-sealed abstract class SingletonInterval(elem: Int) extends Interval(elem, elem + 1) {
-  override def toString = "{" + elem + "}"
-}
-
-/**
- * The empty interval.
- */
-object EmptyInterval extends Interval(0, 0) {
-  override def toString = "{}"
-}
-
 object Interval {
-  val empty = EmptyInterval
+  val empty = Empty
 
   /** Create a new singleton interval. */
-  def singleton(x: Int): SingletonInterval = new SingletonIntervalImpl(x)
+  def singleton(x: Int): Singleton = new SingletonImpl(x)
 
   /** Create a new open interval. */
   def open(start: Int, end: Int): Interval = {
@@ -231,7 +216,7 @@ object Interval {
   def closed(start: Int, end: Int): Interval = {
     require(end >= start)
     if (end == start) Interval.singleton(start)
-    else new ClosedInterval(start, end)
+    else new Closed(start, end)
   }
 
   /** Create an open interval that includes all points between the two intervals. */
@@ -282,11 +267,55 @@ object Interval {
     Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
   }
 
-  private class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
-    require(start <= end, "start must be <= end")
+  // subclasses of Interval
 
+  object Open {
+    /** Match exposing the bounds as an open interval */
+    def unapply(interval: Interval): Option[(Int, Int)] = interval match {
+      case Empty => None
+      case open: Interval => Some(open.start, open.end)
+    }
+  }
+
+  object Closed {
+    /** Match exposing the bounds as an closed interval */
+    def unapply(interval: Interval): Option[(Int, Int)] = interval match {
+      case Empty => None
+      case open: Interval => Some(open.min, open.max)
+    }
+  }
+
+  /**
+   * An interval that includes only a single index.
+   * All intervals with a single element will always extend Singleton.
+   */
+  sealed abstract class Singleton(elem: Int) extends Interval(elem, elem + 1) {
+    def index = this.start
+    override def toString = "{" + elem + "}"
+  }
+  object Singleton {
+    /** Match exposing the bounds as a singleton */
+    def unapply(interval: Singleton): Option[Int] = Some(interval.index)
+  }
+
+  /**
+   * The empty interval.
+   */
+  object Empty extends Interval(0, 0) {
+    override def toString = "{}"
+  }
+
+  // implementations
+
+  /**
+   * `ClosedInterval` extends `Open` so it is not a
+   * required case when  pattern matching an `Interval`.
+   * This is a convenience class for providing a closed toString.
+   * However, Open is the default Interval type.
+   */
+  private class Closed(start: Int, end: Int) extends Interval(start, end + 1) {
     override def toString = "[" + start + ", " + end + "]"
   }
 
-  private class SingletonIntervalImpl(elem: Int) extends SingletonInterval(elem)
+  private class SingletonImpl(elem: Int) extends Singleton(elem)
 }
