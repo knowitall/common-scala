@@ -145,13 +145,13 @@ sealed class Interval protected (val start: Int, val end: Int)
 
   /**
    * Takes the union of two intervals.
-   * The two intervals must border each other.
+   * The two intervals must border or intersect each other.
    */
   def union(that: Interval) = {
     if (that == empty) this
     else if (this == empty) that
     else {
-      require(this borders that)
+      require((this borders that) || (this intersects that))
       Interval.open(that.start min this.start, that.end max this.end)
     }
   }
