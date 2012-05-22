@@ -214,19 +214,24 @@ object Interval {
   val empty = new Interval(0, 0)
 
   /** Create a new singleton interval. */
-  def singleton(x: Int) = new SingletonInterval(x)
+  def singleton(x: Int): SingletonInterval = new SingletonInterval(x)
 
   /** Create a new open interval. */
-  def open(start: Int, end: Int) = {
+  def open(start: Int, end: Int): Interval = {
     if (start == end) Interval.empty
+    else if (end - start == 1) Interval.singleton(start)
     else new Interval(start, end)
   }
 
   /** Create a new closed interval. */
-  def closed(start: Int, end: Int) = new ClosedInterval(start, end)
+  def closed(start: Int, end: Int): Interval = {
+    require(end >= start)
+    if (end == start) Interval.singleton(start)
+    else new ClosedInterval(start, end)
+  }
 
   /** Create an open interval that includes all points between the two intervals. */
-  def between(x: Interval, y: Interval) = {
+  def between(x: Interval, y: Interval): Interval = {
     require(!(x intersects y), "intervals may not intersect")
     Interval.open(x.end min y.end, x.start max y.start)
   }
@@ -236,7 +241,7 @@ object Interval {
    *
    * @throws IllegalArgumentException  some x such that min < x < max is not in col
    */
-  def from(col: Seq[Int]) = {
+  def from(col: Seq[Int]): Interval = {
     if (col.isEmpty) Interval.empty
     else {
       val sorted = col.sorted
@@ -254,7 +259,7 @@ object Interval {
    *
    * @throws IllegalArgumentException  gap in intervals
    */
-  def union(col: Seq[Interval]) = {
+  def union(col: Seq[Interval]): Interval = {
     val sorted = col.sorted
     try {
       sorted.reduceRight(_ union _)
@@ -269,7 +274,7 @@ object Interval {
    *
    * @throws IllegalArgumentException  gap in intervals
    */
-  def span(col: Iterable[Interval]) = {
+  def span(col: Iterable[Interval]): Interval = {
     Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
   }
 }
