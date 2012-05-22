@@ -10,7 +10,7 @@ import Interval.empty
  * @author  Michael Schmitz
  */
 @SerialVersionUID(1234L)
-class /*Open*/ Interval protected (val start: Int, val end: Int)
+sealed class /*Open*/ Interval protected (val start: Int, val end: Int)
     extends IndexedSeq[Int] with Ordered[Interval] with scala.Serializable {
   import Interval._
   require(start <= end, "start must be <= end")
@@ -152,7 +152,7 @@ class /*Open*/ Interval protected (val start: Int, val end: Int)
     else if (this == empty) that
     else {
       require(this borders that)
-      new Interval(that.start min this.start, that.end max this.end)
+      Interval.open(that.start min this.start, that.end max this.end)
     }
   }
 
@@ -199,22 +199,26 @@ class /*Open*/ Interval protected (val start: Int, val end: Int)
   def max = end - 1
 }
 
-class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
-  require(start <= end, "start must be <= end")
-
-  override def toString = "[" + start + ", " + end + "]"
-}
-
-/** An interval that includes only a single index. */
-class SingletonInterval(elem: Int) extends Interval(elem, elem + 1) {
+/**
+ * An interval that includes only a single index.
+ * All intervals with a single element will always extend SingletonInterval.
+ */
+sealed abstract class SingletonInterval(elem: Int) extends Interval(elem, elem + 1) {
   override def toString = "{" + elem + "}"
 }
 
+/**
+ * The empty interval.
+ */
+object EmptyInterval extends Interval(0, 0) {
+  override def toString = "{}"
+}
+
 object Interval {
-  val empty = new Interval(0, 0)
+  val empty = EmptyInterval
 
   /** Create a new singleton interval. */
-  def singleton(x: Int): SingletonInterval = new SingletonInterval(x)
+  def singleton(x: Int): SingletonInterval = new SingletonIntervalImpl(x)
 
   /** Create a new open interval. */
   def open(start: Int, end: Int): Interval = {
@@ -277,4 +281,12 @@ object Interval {
   def span(col: Iterable[Interval]): Interval = {
     Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
   }
+
+  private class ClosedInterval(start: Int, end: Int) extends Interval(start, end + 1) {
+    require(start <= end, "start must be <= end")
+
+    override def toString = "[" + start + ", " + end + "]"
+  }
+
+  private class SingletonIntervalImpl(elem: Int) extends SingletonInterval(elem)
 }
