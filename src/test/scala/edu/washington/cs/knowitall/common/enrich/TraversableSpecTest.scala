@@ -3,13 +3,11 @@ package edu.washington.cs.knowitall.common.enrich
 import edu.washington.cs.knowitall.collection.immutable.Bag
 
 import org.junit.runner.RunWith
-import org.specs.runner.JUnit4
-import org.specs.Specification
-import org.specs.runner.JUnitSuiteRunner
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
 
-@RunWith(classOf[JUnitSuiteRunner])
-class TraversableSpecTest extends JUnit4(TraversableSpec)
-object TraversableSpec extends Specification {
+@RunWith(classOf[JUnitRunner])
+object TraversableSpecTest extends Specification {
   import Traversables._
 
   "simple histogram works fine" in {

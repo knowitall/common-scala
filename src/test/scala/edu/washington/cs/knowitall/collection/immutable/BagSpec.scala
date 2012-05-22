@@ -2,14 +2,12 @@ package edu.washington.cs.knowitall.collection.immutable
 
 import org.junit._
 import org.junit.Assert._
-import org.specs.Specification
-import org.specs.runner.JUnit4
+import org.specs2.mutable.Specification
 import org.junit.runner.RunWith
-import org.specs.runner.JUnitSuiteRunner
+import org.specs2.runner.JUnitRunner
 
-@RunWith(classOf[JUnitSuiteRunner])
-class BagSpecTest extends JUnit4(BagSpec)
-object BagSpec extends Specification {
+@RunWith(classOf[JUnitRunner])
+object BagSpecTest extends Specification {
   val numbers = (0 until 10).flatMap(n => Iterator.continually(n).take(n)).toList
   val doubled = numbers ::: numbers
 

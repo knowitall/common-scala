@@ -1,17 +1,14 @@
 package edu.washington.cs.knowitall.collection.immutable.graph
 
 import scala.collection.SortedSet
-
 import org.junit.runner.RunWith
-import org.specs.runner.JUnit4
-import org.specs.runner.JUnitSuiteRunner
-import org.specs.Specification
-
+import org.specs2.runner.JUnitRunner
+import org.specs2.mutable.Specification
 import Graph.Edge
+import org.junit.runners.JUnit4
 
-@RunWith(classOf[JUnitSuiteRunner])
-class GraphSpecTest extends JUnit4(GraphSpec)
-object GraphSpec extends Specification {
+@RunWith(classOf[JUnitRunner])
+object GraphSpecTest extends Specification {
   val vertices = List(
     "Animal",
     "Mammel",
@@ -35,7 +32,7 @@ object GraphSpec extends Specification {
 
   "graph" should {
     "have 7 edges" in {
-      graph.edges.size must ==(7)
+      graph.edges.size must_==(7)
     }
 
     "contain {" + edges.mkString(", ") + "}" in {
@@ -170,9 +167,8 @@ object GraphSpec extends Specification {
   }
 }
 
-@RunWith(classOf[JUnitSuiteRunner])
-class GraphSpecLoopTest extends JUnit4(GraphSpecLoop)
-object GraphSpecLoop extends Specification {
+@RunWith(classOf[JUnitRunner])
+object GraphSpecLoopTest extends Specification {
   val vertices = List(
     "Strange").map(s => (s, s)).toMap
 

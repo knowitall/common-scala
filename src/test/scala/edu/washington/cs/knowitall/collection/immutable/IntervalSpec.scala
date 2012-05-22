@@ -1,35 +1,35 @@
 package edu.washington.cs.knowitall.collection.immutable
 
 import org.junit.runner.RunWith
-import org.specs.runner.JUnit4
-import org.specs.Specification
-import org.specs.runner.JUnitSuiteRunner
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
-@RunWith(classOf[JUnitSuiteRunner])
-class IntervalSpecTest extends JUnit4(IntervalSpec)
-object IntervalSpec extends Specification {
-  "intervals should border each other" in {
-    (Interval.open(0, 4) borders Interval.open(4, 8)) must beTrue
-    (Interval.open(4, 8) borders Interval.open(0, 4)) must beTrue
-    (Interval.open(0, 3) borders Interval.open(4, 8)) must beFalse
-    (Interval.open(4, 8) borders Interval.open(0, 3)) must beFalse
-    (Interval.empty borders Interval.open(4, 8)) must beFalse
-  }
+@RunWith(classOf[JUnitRunner])
+object IntervalSpecTest extends Specification {
+  "intervals" should {
+    "border each other" in {
+      (Interval.open(0, 4) borders Interval.open(4, 8)) must beTrue
+      (Interval.open(4, 8) borders Interval.open(0, 4)) must beTrue
+      (Interval.open(0, 3) borders Interval.open(4, 8)) must beFalse
+      (Interval.open(4, 8) borders Interval.open(0, 3)) must beFalse
+      (Interval.empty borders Interval.open(4, 8)) must beFalse
+    }
 
-  "intervals should union properly" in {
-    (Interval.open(0, 4) union Interval.open(4, 8)) must_== (Interval.open(0, 8))
-    (Interval.open(0, 4) union Interval.open(6, 8)) must throwA[IllegalArgumentException]
-  }
+    "union properly" in {
+      (Interval.open(0, 4) union Interval.open(4, 8)) must_== (Interval.open(0, 8))
+      (Interval.open(0, 4) union Interval.open(6, 8)) must throwA[IllegalArgumentException]
+    }
 
-  "intervals should intersect properly" in {
-    (Interval.open(0, 4) intersect Interval.open(4, 8)) must_== (Interval.empty)
-    (Interval.open(0, 4) intersect Interval.open(6, 8)) must_== (Interval.empty)
-    (Interval.open(0, 4) intersect Interval.open(2, 6)) must_== (Interval.open(2, 4))
+    "intersect properly" in {
+      (Interval.open(0, 4) intersect Interval.open(4, 8)) must_== (Interval.empty)
+      (Interval.open(0, 4) intersect Interval.open(6, 8)) must_== (Interval.empty)
+      (Interval.open(0, 4) intersect Interval.open(2, 6)) must_== (Interval.open(2, 4))
+    }
   }
 
   "the correct left interval is determined" in {
