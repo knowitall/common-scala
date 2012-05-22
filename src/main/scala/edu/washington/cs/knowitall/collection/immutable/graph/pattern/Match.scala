@@ -4,7 +4,11 @@ import edu.washington.cs.knowitall.collection.immutable.graph.Bipath
 import edu.washington.cs.knowitall.collection.immutable.graph.Graph
 import edu.washington.cs.knowitall.collection.immutable.graph.DirectedEdge
 
-/** A representation of a match of a pattern in a graph. */
+/**
+ * A representation of a match of a pattern in a graph.
+ *
+ * @author  Michael Schmitz
+ */
 class Match[T](
     /** the pattern that was applied */
     val pattern: Pattern[T],

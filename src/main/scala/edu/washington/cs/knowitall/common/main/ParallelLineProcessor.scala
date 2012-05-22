@@ -5,6 +5,8 @@ import edu.washington.cs.knowitall.common.Timing
 /**
  * This class is to be extended by an object to provide a simple main class
  * that processes lines in parallel.
+ *
+ * @author  Michael Schmitz
  */
 abstract class ParallelLineProcessor {
   val groupSize = 1000

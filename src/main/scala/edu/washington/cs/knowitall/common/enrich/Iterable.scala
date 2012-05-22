@@ -2,6 +2,11 @@ package edu.washington.cs.knowitall
 package common
 package enrich
 
+/**
+ * Enrichments for iterables.
+ *
+ * @author  Michael Schmitz
+ */
 object Iterables {
   def interleave[T](x: Iterable[_ <: T], y: Iterable[_ <: T]): Seq[T] = {
     val xIt = x.iterator

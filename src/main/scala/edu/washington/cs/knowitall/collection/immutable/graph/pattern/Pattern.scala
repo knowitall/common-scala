@@ -8,6 +8,8 @@ import edu.washington.cs.knowitall.collection.immutable.graph.{ Graph, DirectedE
  * A pattern will start and end with a node matcher, and every
  * matcher (necessarily) alternates between a NodeMatcher and
  * and EdgeMatcher.
+ *
+ * @author  Michael Schmitz
  */
 class Pattern[T](
     /** a list of matchers, alternating between `NodeMatcher`s and `EdgeMatcher`s. */

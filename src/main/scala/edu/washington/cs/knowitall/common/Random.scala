@@ -3,6 +3,11 @@ package edu.washington.cs.knowitall.common
 import scala.util
 import scala.collection.mutable.ArrayBuffer
 
+/**
+ * Functions that help with tasks involving randomness.
+ *
+ * @author  Michael Schmitz
+ */
 object Random {
   /* choose a single element out of an interable of unknown size */
   def choose[A](iterable: Iterable[A], rand: util.Random): A = {

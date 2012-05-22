@@ -2,14 +2,6 @@ package edu.washington.cs.knowitall.collection.mutable
 
 import scala.collection.mutable
 
-/**
- * Patricia Stringrie implementation taken from "Programming in Scala" by Martin Odersky.
- *
- *   www.artima.com/scalazine/articles/scala_collections_architecture3.html
- *
- * I (Michael) was going to write my own implementation but when I looked for an
- * example how how to subclass Map properly I found this implementation.
- */
 class PrefixSet
     extends mutable.Set[String]
     with mutable.SetLike[String, PrefixSet] {

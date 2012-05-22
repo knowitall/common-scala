@@ -7,6 +7,25 @@ import edu.washington.cs.knowitall.collection.immutable.Bag
 import scalaz._
 import Scalaz._
 
+/**
+ * Enrichments for traversables.
+ *
+ * @author  Michael Schmitz
+ */
+object Traversables {
+  implicit def traversableOnceTo[T](as: TraversableOnce[T]): SuperTraversableOnce[T] = new SuperTraversableOnce[T] {
+    val value = as
+  }
+
+  implicit def traversableOncePairIntTo[T](as: TraversableOnce[(T, Int)]): SuperTraversableOncePairInt[T] = new SuperTraversableOncePairInt[T] {
+    val value = as
+  }
+
+  implicit def traversableOncePairTo[T, U](as: TraversableOnce[(T, U)]): SuperTraversableOncePair[T, U] = new SuperTraversableOncePair[T, U] {
+    val value = as
+  }
+}
+
 sealed trait SuperTraversableOnce[T] extends scalaz.PimpedType[TraversableOnce[T]] {
   def histogram: Map[T, Int] = {
     value.foldLeft(Map[T, Int]()) { (m, c) =>
@@ -63,19 +82,5 @@ sealed trait SuperTraversableOncePair[T, U] extends scalaz.PimpedType[Traversabl
         val bag = map(k)
         map + (k -> (bag + v))
     }
-  }
-}
-
-object Traversables {
-  implicit def traversableOnceTo[T](as: TraversableOnce[T]): SuperTraversableOnce[T] = new SuperTraversableOnce[T] {
-    val value = as
-  }
-
-  implicit def traversableOncePairIntTo[T](as: TraversableOnce[(T, Int)]): SuperTraversableOncePairInt[T] = new SuperTraversableOncePairInt[T] {
-    val value = as
-  }
-
-  implicit def traversableOncePairTo[T, U](as: TraversableOnce[(T, U)]): SuperTraversableOncePair[T, U] = new SuperTraversableOncePair[T, U] {
-    val value = as
   }
 }

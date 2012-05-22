@@ -1,6 +1,11 @@
 package edu.washington.cs.knowitall.common
 
+/** Functions to aid with timing.
+  * 
+  * @author  Michael Schmitz
+  */
 object Timing {
+  /** Intervals are used to format time in different units. */
   sealed abstract class Interval {
     def divisor: Long
     def symbol: String

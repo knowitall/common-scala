@@ -8,8 +8,12 @@ import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
 
 import Graph.Edge
 
-/* A graph representation where data is stored in vertices and edges are
- * represented with adjacency lists. */
+/**
+ * A graph representation where data is stored in vertices and edges are
+ * represented with adjacency lists.
+ *
+ * @author  Michael Schmitz
+ */
 class Graph[T](
     val vertices: Set[T],
     val edges: Set[Edge[T]]) {

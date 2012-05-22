@@ -1,5 +1,10 @@
 package edu.washington.cs.knowitall.common
 
+/**
+ * Functions to help with statistical analysis of results.
+ *
+ * @author  Michael Schmitz
+ */
 object Analysis {
 
   /**

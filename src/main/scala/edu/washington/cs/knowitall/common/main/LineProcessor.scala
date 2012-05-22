@@ -10,6 +10,8 @@ import edu.washington.cs.knowitall.common.Timing.time
  *
  * If the flag "-i" is specified, the program executes interactively.
  * Otherwise lines are expected from stdin.
+ *
+ * @author  Michael Schmitz
  */
 abstract class LineProcessor {
   def init(args: Array[String]) {}

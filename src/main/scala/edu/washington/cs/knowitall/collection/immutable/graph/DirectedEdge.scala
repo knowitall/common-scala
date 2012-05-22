@@ -4,7 +4,7 @@ import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
 
 import Graph.Edge
 
-/* represents a direction in a graph */
+/** represents a direction in a graph */
 sealed trait Direction {
   // extend Object
   override def toString = name
@@ -24,10 +24,12 @@ object Direction {
   }
 }
 
-/* an edge with a direction.  This is useful for representing paths
- * that go up edges as well as down edges.  It is also useful for 
+/**
+ * an edge with a direction.  This is useful for representing paths
+ * that go up edges as well as down edges.  It is also useful for
  * considering all edges from a vertex at once but still having
- * the information of whether the edges go up or down. */
+ * the information of whether the edges go up or down.
+ */
 sealed abstract class DirectedEdge[T](val edge: Edge[T]) {
   require(edge != null)
 
