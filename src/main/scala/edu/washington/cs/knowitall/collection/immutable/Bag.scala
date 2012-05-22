@@ -1,5 +1,6 @@
 package edu.washington.cs.knowitall.collection.immutable
 
+import scala.collection.immutable
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
@@ -13,9 +14,9 @@ import scala.collection.IterableLike
  *
  * @author  Michael Schmitz
  */
-class Bag[T] private (private val bagmap: Map[T, Int], override val size: Int)
+class Bag[T] private (private val bagmap: immutable.Map[T, Int], override val size: Int)
     extends Iterable[T] with IterableLike[T, Bag[T]] {
-  private def this() = this(Map[T, Int]().withDefaultValue(0), 0)
+  private def this() = this(immutable.Map[T, Int]().withDefaultValue(0), 0)
 
   def apply(k: T): Int = bagmap(k)
 
@@ -33,7 +34,7 @@ class Bag[T] private (private val bagmap: Map[T, Int], override val size: Int)
 
   override def newBuilder = Bag.newBuilder[T]
 
-  /** Efficiently convert to a Map */
+  /** Efficiently convert to a immutable.Map */
   def asMap = this.bagmap
 
   /**
