@@ -20,8 +20,8 @@
   </licenses>
   <scm>
     <url>https://github.com/knowitall/common-scala</url>
-    <connection>git://github.com/knowitall/common-scala.git</connection>
-    <developerConnection>git@github.com:knowitall/common-scala.git</developerConnection>
+    <connection>scm:git://github.com/knowitall/common-scala.git</connection>
+    <developerConnection>scm:git:git@github.com:knowitall/common-scala.git</developerConnection>
   </scm>
   <developers>
    <developer>
