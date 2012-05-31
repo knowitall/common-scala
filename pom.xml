@@ -13,7 +13,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <scm>
-    <connection>scm:git://</connection>
+    <url>https://github.com/knowitall/common-scala</url>
+    <connection>git://github.com/knowitall/common-scala.git</connection>
+    <developerConnection>git@github.com:knowitall/common-scala.git</developerConnection>
   </scm>
   <repositories>
     <repository>
