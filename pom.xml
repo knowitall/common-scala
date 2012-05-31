@@ -17,28 +17,6 @@
     <connection>git://github.com/knowitall/common-scala.git</connection>
     <developerConnection>git@github.com:knowitall/common-scala.git</developerConnection>
   </scm>
-  <repositories>
-    <repository>
-      <id>knowitall-public</id>
-      <url>http://knowitall.cs.washington.edu/maven2</url>
-    </repository>
-    <repository>
-      <id>scala-tools.org</id>
-      <url>http://scala-tools.org/repo-releases</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>scala-tools.org</id>
-      <name>Scala-tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>scala-tools.org-snapshots</id>
-      <name>Scala-tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-snapshots</url>
-    </pluginRepository>
-  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
