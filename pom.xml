@@ -6,7 +6,8 @@
     <artifactId>knowitall-oss</artifactId>
     <version>1.0.1</version>
   </parent>
-  <artifactId>common-scala</artifactId>
+  <groupId>edu.washington.cs.knowitall.common-scala</groupId>
+  <artifactId>common-scala_${scala.version}</artifactId>
   <version>1.0.5-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>common-scala</name>
@@ -33,6 +34,7 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <scala.version>2.9.2</scala.version>
   </properties>
   <dependencies>
     <dependency>
@@ -42,7 +44,7 @@
     </dependency>
     <dependency>
       <groupId>org.scalaz</groupId>
-      <artifactId>scalaz-core_2.9.2</artifactId>
+      <artifactId>scalaz-core_${scala.version}</artifactId>
       <version>6.0.4</version>
     </dependency>
     <dependency>
@@ -53,7 +55,7 @@
     </dependency>
     <dependency>
       <groupId>org.specs2</groupId>
-      <artifactId>specs2_2.9.2</artifactId>
+      <artifactId>specs2_${scala.version}</artifactId>
       <version>1.11</version>
       <scope>test</scope>
     </dependency>
