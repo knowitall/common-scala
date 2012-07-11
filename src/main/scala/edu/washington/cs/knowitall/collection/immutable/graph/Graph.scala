@@ -320,16 +320,11 @@ class Graph[T](
 }
 
 object Graph {
-  class Edge[T](
+  case class Edge[T](
       val source: T,
       val dest: T,
       val label: String) {
     def vertices = List(source, dest)
     override def toString = label + "(" + source + ", " + dest + ")"
-    override def hashCode = this.label.hashCode * 39 * (this.source.hashCode + 39 * (this.dest.hashCode))
-    override def equals(that: Any) = that match {
-      case that: Edge[_] => this.label == that.label && this.source == that.source && this.dest == that.dest
-      case _ => false
-    }
   }
 }
