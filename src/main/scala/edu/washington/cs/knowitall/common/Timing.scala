@@ -67,6 +67,13 @@ object Timing {
     result
   }
 
+  /** Execute the block and pass the time taken to the handler. */
+  def timeThen[R](block: => R)(handler: Long => Any): R = {
+    val (ns, result) = time(block)
+    handler(ns)
+    result
+  }
+
   /** Compute the time since ns. */
   def since(ns: Long): Long = System.nanoTime - ns
 
