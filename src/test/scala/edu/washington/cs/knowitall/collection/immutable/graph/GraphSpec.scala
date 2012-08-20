@@ -20,13 +20,13 @@ object GraphSpecTest extends Specification {
     "Lizard").map(s => (s, s)).toMap
 
   val edges = List(
-    new Edge(vertices("Animal"), vertices("Mammel"), ""),
-    new Edge(vertices("Mammel"), vertices("Ape"), ""),
+    new Edge(vertices("Animal"), vertices("Mammel"), "r"),
+    new Edge(vertices("Mammel"), vertices("Ape"), "r"),
     new Edge(vertices("Mammel"), vertices("Cat"), ""),
-    new Edge(vertices("Mammel"), vertices("Human"), ""),
+    new Edge(vertices("Mammel"), vertices("Human"), "r"),
     new Edge(vertices("Animal"), vertices("Reptile"), ""),
     new Edge(vertices("Reptile"), vertices("Lizard"), ""),
-    new Edge(vertices("Meower"), vertices("Cat"), ""))
+    new Edge(vertices("Meower"), vertices("Cat"), "r"))
 
   val graph = new Graph[String](edges)
 
@@ -49,6 +49,10 @@ object GraphSpecTest extends Specification {
 
     "have a single superior" in {
       graph.superior(graph.vertices) must_== "Animal"
+    }
+
+    "have two connected components (by label 'r')" in {
+      graph.components(_.label == "r").size must_== 2
     }
   }
 

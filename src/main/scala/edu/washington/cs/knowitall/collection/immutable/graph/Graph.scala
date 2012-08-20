@@ -142,14 +142,14 @@ class Graph[T](
   }
 
   /* Find all connected components joined by the specified predicate. */
-  def components(pred: Edge[T]=>Boolean): List[Set[T]] = {
-    this.vertices.foldLeft(List.empty[Set[T]]){ case (l, v) =>
+  def components(pred: Edge[T]=>Boolean): Set[Set[T]] = {
+    this.vertices.foldLeft(Set.empty[Set[T]]){ case (s, v) =>
       val nx = this.connected(v, dedge=>pred(dedge.edge))
       if (nx.size > 1) {
-        (nx + v) :: l
+        s + (nx + v)
       }
       else {
-        l
+        s
       }
     }
   }
