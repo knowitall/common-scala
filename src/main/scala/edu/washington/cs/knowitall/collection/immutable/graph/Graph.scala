@@ -55,8 +55,8 @@ class Graph[T](
   }
 
   /* Expand a set of verticess to all neighbors along immediate edges
-   * that satisfy the supplied predicate. 
-   * 
+   * that satisfy the supplied predicate.
+   *
    * @param  vertices  the seed vertices
    * @param  pred  the predicate edges must match to be expanded upon
    * @return  the  the set of vertices in the expansion
@@ -67,7 +67,7 @@ class Graph[T](
 
   /* Iteratively expand the neighbors of a vertex to all
    * neighbors along an edge that satisfy the supplied predicate.
-   * 
+   *
    * @param  v  the seed vertex
    * @param  pred  the predicate edges must match to be expanded upon
    * @return  the set of vertices in the expansion
@@ -139,6 +139,19 @@ class Graph[T](
     }
 
     new Graph(newedges)
+  }
+
+  /* Find all connected components joined by the specified predicate. */
+  def components(pred: Edge[T]=>Boolean): List[Set[T]] = {
+    this.vertices.foldLeft(List.empty[Set[T]]){ case (l, v) =>
+      val nx = this.connected(v, dedge=>pred(dedge.edge))
+      if (nx.size > 1) {
+        (nx + v) :: l
+      }
+      else {
+        l
+      }
+    }
   }
 
   /* all edges leaving or coming into this vertex. */
