@@ -59,7 +59,7 @@ sealed abstract class DirectedEdge[T](val edge: Edge[T]) {
  * an edge that is traversed in the `Up` direction.  In other words,
  * starting at the edge's dest and moving to the edge's source.
  */
-class UpEdge[T](edge: Edge[T]) extends DirectedEdge[T](edge) {
+case class UpEdge[T](override val edge: Edge[T]) extends DirectedEdge[T](edge) {
   def start = edge.dest
   def end = edge.source
   def dir = Direction.Up
@@ -74,29 +74,23 @@ class UpEdge[T](edge: Edge[T]) extends DirectedEdge[T](edge) {
   override def canEqual(that: Any) = that.isInstanceOf[UpEdge[_]]
   override def hashCode() = (edge.hashCode + 2) * 37
 }
-object UpEdge {
-  def unapply[T](dedge: DownEdge[T]) = Some(dedge.edge)
-}
 
 /**
  * an edge that is traversed in the `Down` direction.  In other words,
  * starting at the edge's source and moving to the edge's dest.
  */
-class DownEdge[T](edge: Edge[T]) extends DirectedEdge[T](edge) {
+case class DownEdge[T](override val edge: Edge[T]) extends DirectedEdge[T](edge) {
   def start = edge.source
   def end = edge.dest
   def dir = Direction.Down
   def switchStart(newStart: T) =
-    new DownEdge(new Edge[T](newStart, edge.dest, edge.label))
+    new DownEdge(edge.copy(source = newStart))
   def switchEnd(newEnd: T) =
-    new DownEdge(new Edge[T](edge.source, newEnd, edge.label))
+    new DownEdge(edge.copy(dest = newEnd))
   def flip = new UpEdge[T](edge)
 
   // extend Object
   override def toString() = "Down(" + super.toString + ")"
   override def canEqual(that: Any) = that.isInstanceOf[DownEdge[_]]
   override def hashCode() = (edge.hashCode + 1) * 37
-}
-object DownEdge {
-  def unapply[T](dedge: DownEdge[T]) = Some(dedge.edge)
 }
