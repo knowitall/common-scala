@@ -47,7 +47,7 @@ class Pattern[T](
 
   /** Find all matches of this pattern in the graph. */
   def apply(graph: Graph[T]): List[Match[T]] = {
-    graph.vertices.toList.flatMap(apply(graph, _).toList)
+    graph.vertices.flatMap(apply(graph, _))(scala.collection.breakOut)
   }
 
   def baseEdgeMatchers = {
