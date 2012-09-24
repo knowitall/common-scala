@@ -133,7 +133,7 @@ class ConjunctiveNodeMatcher[T](val matchers: Set[NodeMatcher[T]])
 
   override def baseNodeMatchers = this.matchers.toSeq.flatMap(_.baseNodeMatchers)
 
-  override def toStringF(f: String => String) = f(matchers.map(_.toStringF(f)).mkString(":"))
+  override def toStringF(f: String => String) = f(matchers.iterator.map(_.toStringF(f)).mkString(":"))
   def canEqual(that: Any) = that.isInstanceOf[ConjunctiveNodeMatcher[_]]
   override def equals(that: Any) = that match {
     case that: ConjunctiveNodeMatcher[_] => (that canEqual this) && this.matchers == that.matchers

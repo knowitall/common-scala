@@ -73,9 +73,9 @@ class Pattern[T](
         else List()
       case (m: EdgeMatcher[_]) :: xs =>
         // only consider edges that have not been used
-        val uniqueEdges = graph.dedges(vertex) -- edges.flatMap(e => List(e, e.flip))
+        val uniqueEdges = graph.dedges(vertex) -- edges.iterator.flatMap(e => List(e, e.flip))
         // search for an edge that matches
-        uniqueEdges.flatMap { edge =>
+        uniqueEdges.iterator.flatMap { edge =>
           m.matchText(edge).map(text => (edge, text))
         }.flatMap {
           case (dedge, matchText) =>
@@ -85,7 +85,7 @@ class Pattern[T](
             }
             // we found one, so recurse
             rec(xs, dedge.end, dedge :: edges, nodeGroups, groups)
-        }(scala.collection.breakOut)
+        }.toList
       case _ => List(new Match(this, new Bipath(edges.reverse), nodeGroups.toMap, edgeGroups.toMap))
     }
 
