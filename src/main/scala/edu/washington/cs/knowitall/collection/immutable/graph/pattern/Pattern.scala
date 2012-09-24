@@ -18,7 +18,7 @@ class Pattern[T](
   require(matchers != null)
 
   // ensure that the matchers alternate
-  matchers.view.zipWithIndex.foreach {
+  matchers.iterator.zipWithIndex.foreach {
     case (m, i) =>
       (m, (i % 2)) match {
         case (m: NodeMatcher[_], 0) =>
@@ -34,7 +34,7 @@ class Pattern[T](
   // extend Object
   override def toString = toStringF(identity[String])
   def toStringF(f: String => String) = {
-    matchers.view.map(_.toStringF(f)).mkString(" ")
+    matchers.iterator.map(_.toStringF(f)).mkString(" ")
   }
   def serialize = toString
 
