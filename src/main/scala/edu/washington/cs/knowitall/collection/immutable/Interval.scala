@@ -66,7 +66,7 @@ sealed class Interval protected (val start: Int, val end: Int)
    * @param  x  the value to check
    * @return  true if this interval contains `x`
    */
-  def contains(x: Int) = x <= start && x < end
+  def contains(x: Int) = x >= start && x < end
 
   /**
    * Tests whether two intervals border but do not overlap.

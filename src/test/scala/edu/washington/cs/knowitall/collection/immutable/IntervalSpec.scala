@@ -30,6 +30,13 @@ object IntervalSpecTest extends Specification {
       (Interval.open(0, 4) intersect Interval.open(6, 8)) must_== (Interval.empty)
       (Interval.open(0, 4) intersect Interval.open(2, 6)) must_== (Interval.open(2, 4))
     }
+
+    "contain properly" in {
+      Interval.open(2, 3) contains 0 must_== false
+      Interval.open(2, 3) contains 1 must_== false
+      Interval.open(2, 3) contains 2 must_== true
+      Interval.open(2, 3) contains 3 must_== false
+    }
   }
 
   "the correct left interval is determined" in {
