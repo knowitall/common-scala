@@ -37,6 +37,11 @@ object IntervalSpecTest extends Specification {
       Interval.open(2, 3) contains 2 must_== true
       Interval.open(2, 3) contains 3 must_== false
     }
+
+    "shifts ok" in {
+      Interval.open(2, 4) shift 2 must_== Interval.open(4, 6)
+      Interval.open(2, 4) shift -2 must_== Interval.open(0, 2)
+    }
   }
 
   "the correct left interval is determined" in {
@@ -51,6 +56,20 @@ object IntervalSpecTest extends Specification {
     (Interval.open(0, 4) right Interval.open(2, 6)) must_== (Interval.open(2, 6))
     (Interval.open(4, 8) right Interval.open(0, 4)) must_== (Interval.open(4, 8))
     (Interval.open(2, 6) right Interval.open(0, 4)) must_== (Interval.open(2, 6))
+  }
+
+  "leftOf works" in {
+    (Interval.open(0, 4) leftOf Interval.open(4, 8)) must beTrue
+    (Interval.open(0, 4) leftOf Interval.open(2, 6)) must beTrue
+    (Interval.open(4, 8) leftOf Interval.open(0, 4)) must beTrue
+    (Interval.open(2, 6) leftOf Interval.open(0, 4)) must beTrue
+  }
+
+  "rightOf works" in {
+    (Interval.open(0, 4) rightOf Interval.open(4, 8)) must beFalse
+    (Interval.open(0, 4) rightOf Interval.open(2, 6)) must beFalse
+    (Interval.open(4, 8) rightOf Interval.open(0, 4)) must beFalse
+    (Interval.open(2, 6) rightOf Interval.open(0, 4)) must beFalse
   }
 
   "overlapping intervals have distance 0" in {
