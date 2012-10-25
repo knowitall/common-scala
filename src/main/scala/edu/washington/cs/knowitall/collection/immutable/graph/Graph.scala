@@ -1,12 +1,9 @@
 package edu.washington.cs.knowitall.collection.immutable.graph
 
 import scala.Option.option2Iterable
-import scala.collection.mutable
-import scala.collection.{ Traversable, Set, Map, Iterable }
+import scala.collection.{ mutable, immutable }
 
 import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
-
-import Graph.Edge
 
 /**
  * A graph representation where data is stored in vertices and edges are
@@ -93,19 +90,19 @@ class Graph[T](
 
     // collapse edges by building a map from collapsed vertices
     // to collections of joined vertices
-    var map: Map[T, mutable.Set[T]] = Map()
+    var map: Map[T, Set[T]] = Map()
     for (edge <- targetEdges) {
       // dest is already collapsed
       if (map.contains(edge.dest)) {
-        map(edge.dest) += edge.source
+        map += edge.dest -> (map(edge.dest) + edge.source)
         map += edge.source -> map(edge.dest)
       } // source is already collapsed
       else if (map.contains(edge.source)) {
-        map(edge.source) += edge.dest
+        map += edge.source -> (map(edge.source) + edge.dest)
         map += edge.dest -> map(edge.source)
       } // neither is collapsed
       else {
-        val set = new mutable.HashSet[T]()
+        var set = Set.empty[T]
         set += edge.source
         set += edge.dest
         map += edge.dest -> set
