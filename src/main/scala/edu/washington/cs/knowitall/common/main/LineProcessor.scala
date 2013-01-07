@@ -19,7 +19,7 @@ abstract class LineProcessor {
   def process(line: String): String
   def main(args: Array[String]) {
     init(args)
-    val scanner = new Scanner(System.in)
+    val scanner = new Scanner(System.in, "UTF-8")
 
     val condition =
       if (args.length > 0 && args.contains("-i")) () => true
