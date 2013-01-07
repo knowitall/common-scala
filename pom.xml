@@ -7,7 +7,7 @@
   </parent>
   <groupId>edu.washington.cs.knowitall.common-scala</groupId>
   <artifactId>common-scala_${scala.version}</artifactId>
-  <version>1.0.9-SNAPSHOT</version>
+  <version>1.0.9</version>
   <packaging>jar</packaging>
   <name>common-scala</name>
   <description>Common functionality for the KnowItAll group.</description>
@@ -22,7 +22,7 @@
     <url>https://github.com/knowitall/common-scala</url>
     <connection>scm:git://github.com/knowitall/common-scala.git</connection>
     <developerConnection>scm:git:git@github.com:knowitall/common-scala.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>common-scala_2.9.2-1.0.9</tag>
   </scm>
   <developers>
    <developer>
