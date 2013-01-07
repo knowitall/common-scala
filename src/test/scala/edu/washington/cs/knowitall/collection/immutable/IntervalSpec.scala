@@ -60,15 +60,15 @@ object IntervalSpecTest extends Specification {
 
   "leftOf works" in {
     (Interval.open(0, 4) leftOf Interval.open(4, 8)) must beTrue
-    (Interval.open(0, 4) leftOf Interval.open(2, 6)) must beTrue
-    (Interval.open(4, 8) leftOf Interval.open(0, 4)) must beTrue
-    (Interval.open(2, 6) leftOf Interval.open(0, 4)) must beTrue
+    (Interval.open(0, 4) leftOf Interval.open(2, 6)) must beFalse
+    (Interval.open(4, 8) leftOf Interval.open(0, 4)) must beFalse
+    (Interval.open(2, 6) leftOf Interval.open(0, 4)) must beFalse
   }
 
   "rightOf works" in {
     (Interval.open(0, 4) rightOf Interval.open(4, 8)) must beFalse
     (Interval.open(0, 4) rightOf Interval.open(2, 6)) must beFalse
-    (Interval.open(4, 8) rightOf Interval.open(0, 4)) must beFalse
+    (Interval.open(4, 8) rightOf Interval.open(0, 4)) must beTrue
     (Interval.open(2, 6) rightOf Interval.open(0, 4)) must beFalse
   }
 

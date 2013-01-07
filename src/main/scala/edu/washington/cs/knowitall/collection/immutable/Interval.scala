@@ -173,10 +173,10 @@ sealed class Interval protected (val start: Int, val end: Int)
   def shift(by: Int) = Interval.open(this.start + by, this.end + by)
 
   def leftOf(that: Interval) =
-    this.end < that.start
+    this.end <= that.start
 
   def rightOf(that: Interval) =
-    this.start > that.end
+    this.start >= that.end
 
   /* Determine whether this interval or the supplied interval is left.
    * First compare based on the intervals' start, and secondly compare
