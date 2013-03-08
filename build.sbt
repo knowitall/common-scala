@@ -6,6 +6,8 @@ version := "1.0.10-SNAPSHOT"
 
 scalaVersion := "2.9.2"
 
+crossScalaVersions := Seq("2.9.2", "2.10.0")
+
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % "6.0.4",
     "junit" % "junit" % "4.11" % "test",
