@@ -1,4 +1,4 @@
-package edu.washington.cs.knowitall.collection.immutable
+package edu.knowitall.collection.immutable
 
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification

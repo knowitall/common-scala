@@ -1,9 +1,9 @@
-package edu.washington.cs.knowitall.collection.immutable.graph
+package edu.knowitall.collection.immutable.graph
 
 import scala.Option.option2Iterable
 import scala.collection.{ mutable, immutable }
 
-import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
+import edu.knowitall.collection.immutable.graph.Graph.Edge
 
 /**
  * A graph representation where data is stored in vertices and edges are

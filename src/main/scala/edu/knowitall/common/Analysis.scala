@@ -1,4 +1,4 @@
-package edu.washington.cs.knowitall.common
+package edu.knowitall.common
 
 /**
  * Functions to help with statistical analysis of results.

@@ -1,8 +1,8 @@
-package edu.washington.cs.knowitall.collection.immutable.graph.pattern
+package edu.knowitall.collection.immutable.graph.pattern
 
-import edu.washington.cs.knowitall.collection.immutable.graph.Bipath
-import edu.washington.cs.knowitall.collection.immutable.graph.Graph
-import edu.washington.cs.knowitall.collection.immutable.graph.DirectedEdge
+import edu.knowitall.collection.immutable.graph.Bipath
+import edu.knowitall.collection.immutable.graph.Graph
+import edu.knowitall.collection.immutable.graph.DirectedEdge
 
 /**
  * A representation of a match of a pattern in a graph.

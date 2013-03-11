@@ -1,4 +1,4 @@
-package edu.washington.cs.knowitall.collection.mutable
+package edu.knowitall.collection.mutable
 
 import scala.collection.mutable
 import scala.collection.immutable

@@ -1,8 +1,8 @@
-package edu.washington.cs.knowitall
+package edu.knowitall
 package common
 package enrich
 
-import edu.washington.cs.knowitall.collection.immutable.Bag
+import edu.knowitall.collection.immutable.Bag
 
 import scalaz._
 import Scalaz._

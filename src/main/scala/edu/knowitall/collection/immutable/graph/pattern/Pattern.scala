@@ -1,7 +1,7 @@
-package edu.washington.cs.knowitall.collection.immutable.graph.pattern
+package edu.knowitall.collection.immutable.graph.pattern
 
-import edu.washington.cs.knowitall.common.enrich.Iterables
-import edu.washington.cs.knowitall.collection.immutable.graph.{ Graph, DirectedEdge, Bipath }
+import edu.knowitall.common.enrich.Iterables
+import edu.knowitall.collection.immutable.graph.{ Graph, DirectedEdge, Bipath }
 
 /**
  * Represents a pattern with which graphs can be searched.

@@ -1,4 +1,4 @@
-package edu.washington.cs.knowitall.collection.immutable.graph
+package edu.knowitall.collection.immutable.graph
 
 import scala.collection.SortedSet
 import org.junit.runner.RunWith

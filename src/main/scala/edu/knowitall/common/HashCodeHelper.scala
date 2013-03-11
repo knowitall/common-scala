@@ -1,4 +1,4 @@
-package edu.washington.cs.knowitall.common
+package edu.knowitall.common
 
 /**
  * This object provides a function to generate a hash code

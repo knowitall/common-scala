@@ -1,6 +1,6 @@
-package edu.washington.cs.knowitall.collection.immutable.graph
+package edu.knowitall.collection.immutable.graph
 
-import edu.washington.cs.knowitall.collection.immutable.graph.Graph.Edge
+import edu.knowitall.collection.immutable.graph.Graph.Edge
 
 import Graph.Edge
 
