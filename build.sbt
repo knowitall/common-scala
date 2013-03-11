@@ -2,7 +2,9 @@ organization := "edu.washington.cs.knowitall.common-scala"
 
 name := "common-scala"
 
-version := "1.0.10-SNAPSHOT"
+description := "Common functionality for the KnowItAll group."
+
+version := "1.1.0"
 
 scalaVersion := "2.9.2"
 
@@ -29,7 +31,6 @@ publishTo <<= version { (v: String) =>
 }
 
 pomExtra := (
-  <description>Common functionality for the KnowItAll group.</description>
   <scm>
     <url>https://github.com/knowitall/common-scala</url>
     <connection>scm:git://github.com/knowitall/common-scala.git</connection>
