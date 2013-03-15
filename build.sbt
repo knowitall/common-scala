@@ -6,9 +6,9 @@ description := "Common functionality for the KnowItAll group."
 
 version := "1.1.1-SNAPSHOT"
 
-scalaVersion := "2.9.2"
-
 crossScalaVersions := Seq("2.9.2", "2.10.0")
+
+scalaVersion <<= crossScalaVersions { (vs: Seq[String]) => vs.head }
 
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % "6.0.4",
