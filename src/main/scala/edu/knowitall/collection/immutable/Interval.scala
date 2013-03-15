@@ -273,7 +273,8 @@ object Interval {
    * @throws IllegalArgumentException  gap in intervals
    */
   def span(col: Iterable[Interval]): Interval = {
-    Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
+    if (col.isEmpty) Interval.empty
+    else Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
   }
 
   // subclasses of Interval
