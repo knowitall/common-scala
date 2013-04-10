@@ -114,15 +114,6 @@ class Bag[T] private (private val bagmap: immutable.Map[T, Int], override val si
 }
 
 object Bag {
-  import scalaz._
-  import Scalaz._
-
-  implicit def BagSemigroup[T]: Semigroup[Bag[T]] = semigroup(_ ++ _)
-  implicit def BagZero[T]: Zero[Bag[T]] = zero(Bag.empty[T])
-  implicit def BagPure: Pure[Bag] = new Pure[Bag] {
-    def pure[T](x: => T) = Bag[T](x)
-  }
-
   /**
    * Create a bag from a traversable of tuples where
    * the first part of the tuple is the key and the

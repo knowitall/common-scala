@@ -11,7 +11,6 @@ crossScalaVersions := Seq("2.9.2", "2.10.0")
 scalaVersion <<= crossScalaVersions { (vs: Seq[String]) => vs.head }
 
 libraryDependencies ++= Seq(
-    "org.scalaz" %% "scalaz-core" % "6.0.4",
     "junit" % "junit" % "4.11" % "test",
     "org.specs2" %% "specs2" % "1.12.3" % "test"
     )
