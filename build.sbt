@@ -6,7 +6,7 @@ description := "Common functionality for the KnowItAll group."
 
 version := "1.1.1-SNAPSHOT"
 
-crossScalaVersions := Seq("2.9.2", "2.10.0")
+crossScalaVersions := Seq("2.10.0", "2.9.2")
 
 scalaVersion <<= crossScalaVersions { (vs: Seq[String]) => vs.head }
 
