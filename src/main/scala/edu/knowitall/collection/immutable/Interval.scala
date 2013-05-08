@@ -9,9 +9,8 @@ import Interval.empty
  *
  * @author  Michael Schmitz
  */
-@SerialVersionUID(1234L)
 sealed class Interval protected (val start: Int, val end: Int)
-    extends IndexedSeq[Int] with Ordered[Interval] with scala.Serializable {
+    extends IndexedSeq[Int] with Ordered[Interval] {
   import Interval._
   require(start <= end, "start must be <= end")
 
@@ -227,6 +226,9 @@ object Interval {
     if (end == start) Interval.singleton(start)
     else new Closed(start, end)
   }
+
+  /** Create an interval at the specified starting point of the specified length. */
+  def ofLength(start: Int, length: Int): Interval = Interval.open(start, start + length)
 
   /** Create an open interval that includes all points between the two intervals. */
   def between(x: Interval, y: Interval): Interval = {
