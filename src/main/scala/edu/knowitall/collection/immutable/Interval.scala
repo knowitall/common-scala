@@ -1,6 +1,7 @@
 package edu.knowitall.collection.immutable
 
 import Interval.empty
+import scala.util.matching.Regex
 
 /**
  * Represents an open interval in the Integers.
@@ -12,7 +13,9 @@ import Interval.empty
 sealed class Interval protected (val start: Int, val end: Int)
     extends IndexedSeq[Int] with Ordered[Interval] {
   import Interval._
-  require(start <= end, "start must be <= end")
+  require(start <= end, "start must be <= end: " + start + ">" + end)
+
+  def serialize = toString
 
   override def toString = "[" + start + ", " + end + ")"
   override def equals(that: Any) = that match {
@@ -222,6 +225,7 @@ object Interval {
 
   /** Create a new closed interval. */
   def closed(start: Int, end: Int): Interval = {
+    require(end < Int.MaxValue, "end must be < Int.MaxValue")
     require(end >= start, "end < start: " + end + " < " + start)
     if (end == start) Interval.singleton(start)
     else new Closed(start, end)
@@ -229,6 +233,19 @@ object Interval {
 
   /** Create an interval at the specified starting point of the specified length. */
   def ofLength(start: Int, length: Int): Interval = Interval.open(start, start + length)
+
+  val emptyRegex = new Regex("\\{\\}")
+  val singletonRegex = new Regex("\\{([+-]?\\d+)\\}")
+  val openIntervalRegex = new Regex("\\[([+-]?\\d+), ([+-]?\\d+)\\)")
+  val closedIntervalRegex = new Regex("\\[([+-]?\\d+), ([+-]?\\d+)\\]")
+  def deserialize(pickled: String) = {
+    pickled match {
+      case emptyRegex() => Interval.empty
+      case singletonRegex(value) => Interval.singleton(value.toInt)
+      case openIntervalRegex(a, b) => Interval.open(a.toInt, b.toInt)
+      case closedIntervalRegex(a, b) => Interval.closed(a.toInt, b.toInt)
+    }
+  }
 
   /** Create an open interval that includes all points between the two intervals. */
   def between(x: Interval, y: Interval): Interval = {

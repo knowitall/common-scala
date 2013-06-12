@@ -3,6 +3,8 @@ package edu.knowitall.collection.immutable
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
+import org.specs2.ScalaCheck
+import org.scalacheck.Prop._
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -10,7 +12,7 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
 @RunWith(classOf[JUnitRunner])
-object IntervalSpecTest extends Specification {
+object IntervalSpecTest extends Specification with ScalaCheck {
   "intervals" should {
     "border each other" in {
       (Interval.open(0, 4) borders Interval.open(4, 8)) must beTrue
@@ -108,29 +110,24 @@ object IntervalSpecTest extends Specification {
     (Interval.empty superset Interval.open(2, 4)) must beFalse
   }
 
-  "serialization works properly" in {
-
-    def testSerDeser(interval: Interval): Unit = {
-
-      val bytesOutStream = new ByteArrayOutputStream()
-      val objOutStream = new ObjectOutputStream(bytesOutStream)
-      objOutStream.writeObject(interval)
-      val outputBytes = bytesOutStream.toByteArray
-      objOutStream.close()
-      bytesOutStream.close()
-
-      val bytesInStream = new ByteArrayInputStream(outputBytes)
-      val objInStream = new ObjectInputStream(bytesInStream)
-      val deserializedInterval = objInStream.readObject.asInstanceOf[Interval]
-      objInStream.close()
-      bytesInStream.close()
-
-      deserializedInterval must_== interval
+  "string serialization works properly" in {
+    Interval.deserialize(Interval.empty.serialize) must_== Interval.empty
+    check { (x: Int) =>
+      val interval = Interval.singleton(x)
+      Interval.deserialize(interval.serialize) must_== interval
+      Interval.closed(x, x) must_== interval
     }
-
-    testSerDeser(Interval.empty)
-    testSerDeser(Interval.closed(5, 10))
-    testSerDeser(Interval.open(100, 200))
-    testSerDeser(Interval.singleton(1234))
+    forAll { (a: Int, b: Int) =>
+      (a < b) ==> {
+        val interval = Interval.open(a, b)
+        Interval.deserialize(interval.serialize) must_== interval
+      }
+    }
+    check { (a: Int, b: Int) =>
+      (a <= b && b < Int.MaxValue) ==> {
+        val interval = Interval.closed(a, b)
+        Interval.deserialize(interval.serialize) must_== interval
+      }
+    }
   }
 }

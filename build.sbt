@@ -12,7 +12,8 @@ scalaVersion <<= crossScalaVersions { (vs: Seq[String]) => vs.head }
 
 libraryDependencies ++= Seq(
     "junit" % "junit" % "4.11" % "test",
-    "org.specs2" %% "specs2" % "1.12.3" % "test"
+    "org.specs2" %% "specs2" % "1.12.3" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.10.1" % "test"
     )
 
 licenses := Seq("BSD 3-clause License" -> url("http://www.opensource.org/licenses/bsd-3-clause"))
