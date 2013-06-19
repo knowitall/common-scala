@@ -5,11 +5,12 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.ScalaCheck
 import org.scalacheck.Prop._
-
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import org.scalacheck.Gen
+import org.scalacheck.Arbitrary
 
 @RunWith(classOf[JUnitRunner])
 object IntervalSpecTest extends Specification with ScalaCheck {
@@ -92,6 +93,34 @@ object IntervalSpecTest extends Specification with ScalaCheck {
   "between works properly" in {
     Interval.between(Interval.open(0, 2), Interval.open(3, 10)) must_== (Interval.open(2, 3))
     Interval.between(Interval.open(0, 2), Interval.open(6, 10)) must_== (Interval.open(2, 6))
+  }
+
+  val intervalGen = for {
+    n <- Gen.choose(0, 100)
+    m <- Gen.choose(n, 100)
+  } yield Interval.open(n, m)
+
+  "Interval.minimal works properly" in {
+    implicit def arbInterval: Arbitrary[List[Interval]] = {
+      Arbitrary {
+        Gen.listOf(intervalGen)
+      }
+    }
+
+    forAll { (intervals: List[Interval]) =>
+      val min = Interval.minimal(intervals)
+
+      // for all points in the original intervals
+      // that point must be in the new intervals
+      intervals.forall(i => min.exists(_.contains(i)))
+
+      // for all points in one of the new intervals
+      // no other interval may contain the same point
+      min.forall(interval => !min.exists(other => !(other eq interval) && (other intersects interval)))
+
+      // result is sorted
+      min.sorted == min
+    }
   }
 
   "empty works properly" in {

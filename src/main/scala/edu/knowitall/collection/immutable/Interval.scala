@@ -82,6 +82,17 @@ sealed class Interval protected (val start: Int, val end: Int)
   }
 
   /**
+   * Tests whether a point border an interval.
+   *
+   * @param  that  the point to check
+   * @return  true if this interval borders the point
+   */
+  def borders(that: Int) = {
+    if (this == empty) false
+    else this.start - 1 == that || this.end == that
+  }
+
+  /**
    * Tests whether this interval is a superset of another interval.
    *
    * @param  that  the interval to check
@@ -294,6 +305,23 @@ object Interval {
   def span(col: Iterable[Interval]): Interval = {
     if (col.isEmpty) Interval.empty
     else Interval.open(col.map(_.min).min, col.map(_.max).max + 1)
+  }
+
+  /**
+   * create a minimal spanning set of the supplied intervals.
+   *
+   * @returns  a sorted minimal spanning set
+   */
+  def minimal(intervals: Iterable[Interval]): List[Interval] = {
+    val set = collection.immutable.SortedSet.empty[Int] ++ intervals.flatten
+    set.foldLeft(List.empty[Interval]){ case (list, i) =>
+      val singleton = Interval.singleton(i)
+      list match {
+        case Nil => List(singleton)
+        case x :: xs if x borders i => (x union singleton) :: xs
+        case xs => singleton :: xs
+      }
+    }.reverse
   }
 
   // subclasses of Interval
