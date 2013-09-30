@@ -310,7 +310,7 @@ object Interval {
   /**
    * create a minimal spanning set of the supplied intervals.
    *
-   * @returns  a sorted minimal spanning set
+   * @return  a sorted minimal spanning set
    */
   def minimal(intervals: Iterable[Interval]): List[Interval] = {
     val set = collection.immutable.SortedSet.empty[Int] ++ intervals.flatten
