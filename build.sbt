@@ -4,7 +4,7 @@ name := "common-scala"
 
 description := "Common functionality for the KnowItAll group."
 
-version := "1.1.2-SNAPSHOT"
+version := "1.1.2"
 
 crossScalaVersions := Seq("2.10.2", "2.9.3")
 
