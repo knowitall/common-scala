@@ -1,3 +1,5 @@
+** **DEPRECATED!** ** Please see https://github.com/allenai/openie-standalone, which has combined multiple projects into a single project that builds on Scala 2.11.
+
 # Common-Scala
 
 This is a collection of common code (enrichments, collections, and functions)
