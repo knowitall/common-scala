@@ -14,15 +14,15 @@ object BagSpecTest extends Specification {
   "simple bag checks" in {
     val bag = Bag.from(numbers)
     bag.size must_== (numbers.size)
-    bag must haveTheSameElementsAs(numbers)
+    bag must containTheSameElementsAs(numbers)
 
-    (bag merge bag) must haveTheSameElementsAs(numbers ::: numbers)
-    (bag ++ bag) must haveTheSameElementsAs(numbers ::: numbers)
+    (bag merge bag) must containTheSameElementsAs(numbers ::: numbers)
+    (bag ++ bag) must containTheSameElementsAs(numbers ::: numbers)
     (bag ++ bag).size must_== numbers.size * 2
-    (bag ++ numbers) must haveTheSameElementsAs(numbers ::: numbers)
-    (numbers ++ bag) must haveTheSameElementsAs(numbers ::: numbers)
+    (bag ++ numbers) must containTheSameElementsAs(numbers ::: numbers)
+    (numbers ++ bag) must containTheSameElementsAs(numbers ::: numbers)
 
-    bag.uniques must haveTheSameElementsAs(numbers.toSet)
+    bag.uniques must contain(numbers.toSet)
   }
 }
 

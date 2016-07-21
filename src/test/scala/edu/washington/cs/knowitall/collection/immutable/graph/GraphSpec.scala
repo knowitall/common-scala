@@ -36,11 +36,11 @@ object GraphSpecTest extends Specification {
     }
 
     "contain {" + edges.mkString(", ") + "}" in {
-      graph.edges must haveTheSameElementsAs(edges)
+      graph.edges must containTheSameElementsAs(edges)
     }
 
     "contain {" + vertices.values.mkString(", ") + "}" in {
-      graph.vertices must haveTheSameElementsAs(vertices.values)
+      graph.vertices must contain(vertices.values.toSet)
     }
 
     "be connected" in {
@@ -85,21 +85,21 @@ object GraphSpecTest extends Specification {
 
     val neighbors = List("Animal", "Ape", "Cat", "Human")
     "have neighbors {" + neighbors.mkString(", ") + "}" in {
-      graph.neighbors(vertex) must haveTheSameElementsAs(neighbors.map(vertices(_)))
+      graph.neighbors(vertex) must containTheSameElementsAs(neighbors.map(vertices(_)))
     }
 
     "have neighbors (x=>true) {" + neighbors.mkString(", ") + "}" in {
-      graph.neighbors(vertex, x => true) must haveTheSameElementsAs(neighbors.map(vertices(_)))
+      graph.neighbors(vertex, x => true) must containTheSameElementsAs(neighbors.map(vertices(_)))
     }
 
     val inferiors = List("Mammel", "Ape", "Cat", "Human")
     "have inferiors {" + inferiors.mkString(", ") + "}" in {
-      graph.inferiors(vertex) must haveTheSameElementsAs(inferiors.map(vertices(_)))
+      graph.inferiors(vertex) must containTheSameElementsAs(inferiors.map(vertices(_)))
     }
 
     val superiors = List("Animal", "Mammel")
     "have superiors {" + superiors.mkString(", ") + "}" in {
-      graph.superiors(vertex) must haveTheSameElementsAs(superiors.map(vertices(_)))
+      graph.superiors(vertex) must containTheSameElementsAs(superiors.map(vertices(_)))
     }
 
     "neighbor Animal" in {
@@ -128,11 +128,11 @@ object GraphSpecTest extends Specification {
     val vertex = vertices("Animal")
     val neighbors = List("Mammel", "Reptile")
     "have neighbors {" + neighbors.mkString(", ") + "}" in {
-      graph.neighbors(vertex) must haveTheSameElementsAs(neighbors.map(vertices(_)))
+      graph.neighbors(vertex) must containTheSameElementsAs(neighbors.map(vertices(_)))
     }
 
     "have inferiors of {" + (vertices.keySet - "Meower").mkString(", ") + "}" in {
-      graph.inferiors(vertex) must haveTheSameElementsAs(vertices.values.toSet - vertices("Meower"))
+      graph.inferiors(vertex) must contain(vertices.values.toSet - vertices("Meower"))
     }
   }
 
@@ -143,7 +143,7 @@ object GraphSpecTest extends Specification {
       val elements = (vertices.keys.toSet - "Mammel" - "Reptile").map(vertices(_)) + mutant
       "have elements {" + elements.mkString(", ") + "}" in {
         val collapsed = graph.collapse(collapse.map(vertices(_)).toSet)(vertices => mutant)
-        collapsed.vertices must haveTheSameElementsAs(elements)
+        collapsed.vertices must contain(elements)
       }
     }
   }
@@ -155,7 +155,7 @@ object GraphSpecTest extends Specification {
       val elements = (vertices.keys.toSet - "Mammel" - "Cat" - "Ape").map(vertices(_)) + mutant
       val collapsed = graph.collapse(collapse.map(vertices(_)).toSet)(vertices => mutant)
       "have elements {" + elements.mkString(", ") + "}" in {
-        collapsed.vertices must haveTheSameElementsAs(elements)
+        collapsed.vertices must contain(elements)
       }
 
       val parents = SortedSet[String]() ++ Iterable("Animal", "Meower")
@@ -163,9 +163,9 @@ object GraphSpecTest extends Specification {
       val neighbors = parents ++ children
       val neigbors = parents ++ children
       "have " + neighbors.mkString(", ") + " as neighbors of the collapsed node" in {
-        collapsed.neighbors("mutant") must haveTheSameElementsAs(neighbors)
-        collapsed.predecessors("mutant") must haveTheSameElementsAs(parents)
-        collapsed.successors("mutant") must haveTheSameElementsAs(children)
+        collapsed.neighbors("mutant") must contain(neighbors)
+        collapsed.predecessors("mutant") must contain(parents)
+        collapsed.successors("mutant") must contain(children)
       }
     }
   }
@@ -183,19 +183,19 @@ object GraphSpecLoopTest extends Specification {
 
   "vertex Strange" should {
     "have itself as its only neighbor" in {
-      graph.neighbors("Strange") must haveTheSameElementsAs(List("Strange"))
+      graph.neighbors("Strange") must containTheSameElementsAs(List("Strange"))
     }
 
     "be connected to only itself" in {
-      graph.connected("Strange", x => true) must haveTheSameElementsAs(List("Strange"))
+      graph.connected("Strange", x => true) must containTheSameElementsAs(List("Strange"))
     }
 
     "have itself as its only inferior" in {
-      graph.inferiors("Strange") must haveTheSameElementsAs(List("Strange"))
+      graph.inferiors("Strange") must containTheSameElementsAs(List("Strange"))
     }
 
     "have itself as its only superior" in {
-      graph.superiors("Strange") must haveTheSameElementsAs(List("Strange"))
+      graph.superiors("Strange") must containTheSameElementsAs(List("Strange"))
     }
   }
 }
